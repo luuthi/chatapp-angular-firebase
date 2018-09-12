@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "outDir": "../out-tsc/app",
+    "module": "es2015",
+    "types": []
+  },
+  "exclude": [
+    "src/test.ts",
+    "**/*.spec.ts"
+  ],
+  "paths": {
+    /*
+    We can: import { AuthService } from "@app/core";
+    Instead of: import { AuthService } from ‘../../../../core/services/auth.service’;
+    */
+    "@app/*": ["app/*"],
+    "@app/core/*": ["app/core/*"],
+    "@app/shared/*": ["app/shared/*"],
+    "@env/*": ["enviroments/*"],
+  } 
+}
+

@@ -1,0 +1,540 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+html,
+body, #timetable1, .navbar, mat-toolbar.toolbar{
+    min-width: 1024px;
+    /* width: 100vw; */
+}
+@-ms-viewport{
+    width: device-width;
+    width: 1024px;
+}
+body{
+    margin: 0px !important;
+    font-size: 13px !important;
+    /* font-family: 'Roboto'; */
+    font-family: 'Arial-BoldMT', 'Arial Bold', 'Arial';
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+body::-webkit-scrollbar {
+    width: 0;
+    height: 10px;
+    background-color: #f2f2f2;
+    border-bottom-left-radius: 0;
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: #999999;
+}
+body::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: #f2f2f2;
+    border-bottom-left-radius: 0;
+}
+button .mat-button-focus-overlay{
+    background-color: transparent !important;
+}
+table {
+    border-color: #e4e4e4 !important;
+}
+
+.bookable-content mat-tab-header{
+    position: absolute !important;
+    top: 0px !important;
+    width: 60% !important;
+    height: 50px;
+    border-bottom: 0px;
+    left:12% !important;
+}
+.bookable-content mat-tab-header .mat-tab-label.mat-tab-label-active{
+    background: rgba(0,0,0,0.2);
+    opacity: 1;
+}
+.bookable-content mat-tab-header .mat-tab-label{
+    height: 50px;
+    min-width: 100px;
+}
+.bookable-content mat-tab-header .mat-tab-label .mat-tab-label-content{
+    color: #fff;
+    font-size: 15px;
+    font-weight: normal;
+}
+.bookable-content mat-tab-header .mat-tab-label .mat-tab-label-content i{
+    margin-right: 5px;
+    font-size: 20px;
+}
+.bookable-content .mat-tab-group.mat-primary .mat-ink-bar{
+    background-color: transparent;
+}
+.mat-button{
+    font-size: 13px;
+}
+.mat-tab-body-content{
+    overflow: hidden !important;
+}
+
+/* style header-table  */
+#nav-calendar{
+    min-width: 230px;
+}
+.btn-group:hover .btn-prev,
+.btn-group:hover .btn-next{
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.35);
+}
+
+.btn-group .btn-prev,
+.btn-group .btn-next{
+    height: 30px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+.btn-group .btn-prev,
+.btn-group .btn-next,
+.btn-group{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.create-book{
+    position: relative;
+}
+.btn-group h3{
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0px 15px;
+}
+
+mat-list-item{
+    font-size: 13px !important;
+    height: auto !important;
+}
+.mat-list-item-content{
+    width: 100% !important;
+}
+.mat-button{
+    min-width: auto !important;
+}
+.navbar .navbar-right .navbar-right-absolute{
+    position: absolute;
+    top: 52px;
+    width: 320px;
+    left: 50%;
+    transform: translateX(-53%);
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    z-index: 999;
+}
+.navbar .navbar-right .navbar-right-absolute .noti-icon{
+    margin-right: 15px;
+}
+.navbar .navbar-right .navbar-right-absolute .navbar-right-absolute-header:after{
+    position: absolute;
+    content: '';
+    width: 10px;
+    top: -18px;
+    z-index: 8;
+    left: 50%;
+    border-top: 9px solid transparent;
+    border-left: 9px solid transparent;
+    border-bottom: 9px solid #333333;
+    border-right: 9px solid transparent;
+}
+.navbar .navbar-right .navbar-right-absolute .navbar-right-absolute-header{
+    position: relative;
+    background: #333333;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin: 0px;
+    font-size: 13px;
+    padding: 0px 15px;
+}
+.navbar .navbar-right .navbar-right-absolute .content-item{
+    padding: 7px 10px;
+    border-top: 1px solid #fff;
+    position: relative;
+    overflow: hidden;
+}
+.navbar .navbar-right .navbar-right-absolute .content-item>div{
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+}
+.navbar .navbar-right .navbar-right-absolute .content-item:hover .btn-message{
+    opacity: 1;
+}
+.navbar .navbar-right .navbar-right-absolute .content-item .btn-message:hover{
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.35);
+}
+.navbar .navbar-right .navbar-right-absolute .content-item .btn-message{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background: #ea5b44;
+    color: #fff;
+    border-radius: 0px;
+    width: 40px;
+    text-align: center;
+    padding: 0px;
+    height: 40px;
+    opacity: 0;
+    transition: 0.5s;
+    border: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+.navbar .navbar-right .navbar-right-absolute .content-item .btn-message i,
+.navbar .navbar-right .navbar-right-absolute .content-item .content-item-phone i{
+    font-size: 18px;
+}
+.navbar .navbar-right .navbar-right-absolute .content-item .content-item-phone a{
+    color: #000;
+    margin-left: 5px;
+}
+
+/* style for date-picker   */
+
+.cdk-overlay-pane{
+    left: 50% !important;
+    transform: translateX(-38%);
+    top: 85px !important;
+}
+.cdk-overlay-pane.dialog{
+    transform: translateX(0px) !important;
+}
+.mat-dialog-container {
+    padding: 0px !important;
+}
+
+.mat-dialog-content .mat-tab-header{
+    background: #f1f1f4 !important;
+    padding: 0px 15px !important;
+    border-bottom: 0px;
+}
+.mat-dialog-content .mat-tab-label.mat-tab-label-active{
+    color: #333;
+    font-weight: bold !important;
+}
+.mat-dialog-content .mat-tab-label{
+    padding: 0px 15px ;
+    height: 45px;
+    min-width: auto;
+    font-weight: normal;
+    font-size: 14px ;
+    opacity: 1;
+    color: #AEAEAE;
+}
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #333333 !important;
+    height: 4px !important;
+}
+/* button */
+button{
+    outline: none !important;
+    border: 0;
+}
+/* input placeholder */
+input::-moz-placeholder {
+    color: #999999 !important;
+}
+input:-ms-input-placeholder {
+    color: #999999 !important;
+}
+input::-webkit-input-placeholder {
+    color: #999999 !important;
+}
+/* messages */
+.fab-messages-inner{
+    position: fixed;
+    bottom: 50px;
+    z-index: 1000;
+    bottom: 15px;
+    right: 25px;
+}
+.fab-messages,
+.fab-btn-mes{
+    position: relative;
+}
+
+.fab-btn-mes{
+    animation: swing 1s ease-out;
+    animation-delay: 3s;
+}
+.fab-btn-mes:hover:not(.show){
+    animation: swing 1s infinite ease-out;
+}
+.fab-messages .btn-messages{
+    /* position: absolute; */
+    border: 0;
+    outline: none;
+    /* z-index: 999; */
+    width: 55px;
+    height: 55px;
+    line-height: 25px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    color: #FFFFFF;
+    background-color: #ea5b44;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35) !important;
+}
+.fab-btn-mes i{
+    transition-duration: 600ms;
+    position: absolute;
+}
+.fab-btn-mes i.fa-envelope{
+    top: 32%;
+    left: 32%;
+}
+.fab-btn-mes i.fa-times{
+    font-size: 22px;
+    top: 30%;
+    left: 34%;
+    display: none;
+}
+.fab-messages .btn-messages .mat-button-wrapper{
+    padding: 14px 0 18px 0;
+}
+.fab-messages .badge-messages{
+    position: absolute;
+    text-align: center;
+    z-index: 1000;
+    right: 0;
+    bottom: 38px;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    color: #EA5B44;
+    border: 1px solid #EA5B44;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes swing{
+    0%{
+        transform:rotate(0)
+    }
+    20%{
+        transform:rotate(15deg)
+    }
+    40%{
+        transform:rotate(-10deg)
+    }
+    60%{
+        transform:rotate(5deg)
+    }
+    80%{
+        transform:rotate(-5deg)
+    }
+    to{
+        transform:rotate(0deg)
+    }
+}.swing{transform-origin:top center;animation-name:swing}
+@keyframes upchat {
+    0% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes downchat {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+}
+@keyframes upadd {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-200%);
+    }
+}
+@keyframes downadd {
+    0% {
+        opacity: 0;
+        transform: translateY(-200%);
+    }
+    60% {
+        opacity: 0;
+        /* transform: translateY(-50%); */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mat-icon-button{
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    border-radius: 4px !important;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+    margin: 0px 5px !important;
+}
+
+
+.mat-calendar-next-button::after, 
+.mat-calendar-previous-button::after{
+    margin: 11px !important;
+    color: #212529 !important;
+}
+.mat-button-ripple-round{
+    border-radius: 4px !important;
+}
+
+/* fixed tooltip btn add */
+.cdk-overlay-container .cdk-overlay-connected-position-bounding-box .btn-create-tooltip{
+    position: absolute;
+    top: -54px !important;
+    left: 48vw !important;
+    width: 80px;
+}
+/* style date calender */
+/* .mat-datepicker-content{ */
+.mat-datepicker-content{
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.498039215686275) !important;
+}
+.mat-datepicker-content .mat-calendar{
+    width: 260px !important;
+    height: 228px !important;
+    /* 245 180 */
+    /* 40 */
+}
+.mat-calendar-table-header th{
+    padding: 0 0 5px 0 !important;
+}
+.mat-calendar-header{
+    padding: 0 !important;
+}
+.mat-calendar-controls{
+    margin: 0 !important;
+    align-items: center;
+    justify-content: center;
+}
+.mat-calendar-period-button{
+    order: 2;
+    /* padding: 0 !important; */
+    padding: 0 10px 0 9px !important;
+    font-size: 12px;
+    font-weight: bold;
+}
+.mat-calendar-next-button{
+    order: 3;
+    /* margin: 0 !important; */
+    box-shadow: none;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+.mat-calendar-previous-button{
+    order: 1;
+    box-shadow: none;
+    margin-right: 0 !important;
+    margin-left: 2px !important;
+    /* margin: 0 !important; */
+}
+.mat-calendar-previous-button:hover,
+.mat-calendar-next-button:hover{
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.498039215686275);
+}
+.mat-calendar-spacer{
+    flex: 0 !important;
+}
+.mat-calendar-body-cell-content{
+    width: 28px !important;
+    height: 28px !important;
+}
+.mat-calendar-body-cell,
+.mat-calendar-body-label{
+    padding-bottom: 13px !important;
+    padding-top: 13px !important;
+}
+.mat-calendar-body-selected{
+    background: #cccccc !important;
+    border: 0 !important;
+    color: #333 !important;
+}
+.mat-calendar-body-today,
+.mat-calendar-body-today:not(.mat-calendar-body-selected){
+    background: #ea5b44 !important;
+    border: 0 !important;
+}
+/* service checkbox */
+
+.checkbox-cus .mat-checkbox-layout{
+    margin-bottom: 0 !important;
+}
+.checkbox-cus .mat-checkbox-inner-container{
+    height: 13px !important;
+    width: 13px !important;
+    margin-top: 4px !important;
+}
+.checkbox-cus .mat-checkbox-frame{
+    border-width: 1.5px !important;
+    border-color: #a6a6a6 !important;
+}
+.checkbox-cus .mat-checkbox-background{
+    background-color: #dedede !important;
+}
+.checkbox-cus.mat-checkbox-focused .mat-checkbox-ripple{
+    width: 18px;
+    height: 18px;
+    left: calc(50% - 9px);
+    top: calc(50% - 9px);
+}
+ .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-accent .mat-pseudo-checkbox-checked, .mat-accent .mat-pseudo-checkbox-indeterminate, .mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate {
+    background-color: red !important; /* Red background for example */
+ }
+.add-group .mat-list-item .mat-list-item-content{
+    padding: 0px !important;
+}
+
+.list-statistic .mat-radio-outer-circle,
+.list-statistic .mat-radio-inner-circle , 
+.list-statistic .mat-radio-container{
+    width: 15px !important;
+    height: 15px !important;
+}
+.list-statistic label{
+    margin: 0px !important;
+}
+.list-statistic .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
+{
+    border-color: #09a78f;
+}
+.list-statistic .mat-radio-button.mat-accent .mat-radio-inner-circle{
+    background-color: #09a78f;
+}

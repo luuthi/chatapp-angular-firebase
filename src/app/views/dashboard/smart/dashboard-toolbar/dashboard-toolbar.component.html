@@ -1,0 +1,107 @@
+<div class="row text-center navbar">
+  <!-- calendar -->
+  <div class="navbar-pagination">
+      <button mat-button class="btn-prev">
+        <i class="material-icons">
+          keyboard_arrow_left
+        </i>
+      </button>
+      <span>1-10</span>
+      <button mat-button class="btn-prev">
+        <i class="material-icons">
+          keyboard_arrow_right
+        </i>
+      </button>
+    </div>
+  <div class="calendar-search">
+
+    <div class="btn-group" id="nav-calendar" #navCalendar (mouseenter)='enterCalendar($event)'>
+      <!-- <div class="left-arrow-back" [style.opacity]="(viewDate.toDateString()) != (todayDate.toDateString()) ? '1': '0'"></div> -->
+      <div class="btn-today" [class.back-today]="(viewDate.toDateString()) != (todayDate.toDateString())" mwlCalendarToday [(viewDate)]="viewDate"
+        (click)="goCalenderToday()">
+        Hôm nay
+      </div>
+      <div class="btn-prev" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+        <i class="material-icons">
+          keyboard_arrow_left
+        </i>
+      </div>
+      <div>
+        <h3>{{ viewDate | date:'dd MMM , y'}}</h3>
+      </div>
+      <div class="btn-next" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false">
+        <i class="material-icons">
+          keyboard_arrow_right
+        </i>
+      </div>
+      <app-dashboar-toolbar-date-picker (actionChangeDate)="changeDate($event)" #dateComponent></app-dashboar-toolbar-date-picker>
+    </div>
+    <!-- button add-book , add-employee....-->
+    <div class="add-group">
+      <button class="add-icon"><i class="material-icons">
+          add
+        </i></button>
+        <mat-list>
+          <mat-list-item class="add-item" (click) = "openDialog()">
+            <i class="material-icons">
+              add
+            </i>
+            <span class="add-name">Book lịch hẹn mới</span>
+          </mat-list-item>
+          <mat-list-item class="add-item">
+            <i class="material-icons">
+              <i class="material-icons">
+                person_add
+                </i>
+            </i>
+            <span class="add-name">Thêm khách hàng</span>
+          </mat-list-item>
+          <mat-list-item class="add-item">
+            <i class="material-icons">
+              group_add
+              </i>
+            <span class="add-name">Thêm nhân viên</span>
+          </mat-list-item>
+          <mat-list-item class="add-item">
+            <i class="material-icons">
+              local_shipping
+              </i>
+            <span class="add-name">Thêm dịch vụ</span>
+          </mat-list-item>
+        </mat-list>
+    </div>
+  </div>
+  <div class="navbar-right">
+    <!-- confirmed book -->
+    <div #confirm class="navbar-confirm">
+      <button mat-button class="btn-confirm">
+        <span>64</span>confirmed
+      </button>
+      <app-dashboard-toolbar-confirm *ngIf="chatService.status.confirm.value"></app-dashboard-toolbar-confirm>
+    </div>
+    <div class="navbar-pending">
+      <button mat-button class="btn-pending">
+        <span>3</span>pending
+      </button>
+      <app-dashboard-toolbar-pending *ngIf="chatService.status.pending.value"></app-dashboard-toolbar-pending>
+    </div>
+    <div class="navbar-notifications">
+      <button mat-button class="btn-notification">
+        <i class="material-icons">
+          notifications
+        </i>
+        <span class="noti-count">2</span>
+      </button>
+      <app-dashboard-toolbar-notification *ngIf="chatService.status.notification.value"></app-dashboard-toolbar-notification>
+    </div>
+    <div class="navbar-statistic">
+      <button mat-button class="btn-statistic">
+        <i class="material-icons">
+          bar_chart
+        </i>
+      </button>
+      <app-dashboard-toolbar-statistic *ngIf="chatService.status.statistic.value"></app-dashboard-toolbar-statistic>
+    </div>
+    
+  </div>
+</div>

@@ -1,0 +1,205 @@
+:host{
+    // animation: downchat 0.5s ease-in-out;
+    // transform: translateY(200%);
+    &.hide .box-add-inner{
+        transform: translateY(-200%);
+        opacity: 0;
+        animation: upadd 0.5s ease-out;
+
+        // transform: translateY(-200%);
+        // max-height: 0;
+        // opacity: 0;
+        // transition: 0.3s ease-out;
+        // transition: max-height 0.5s ease-out;
+    }
+    &.show .box-add-inner{
+        animation: downadd 0.5s ease-in-out;
+        opacity: 1;
+        transform: translateY(0);
+
+        // transform: translateY(0);
+        // max-height: 245px;
+        // opacity: 1;
+        // transition: 0.3s ease-out;
+        // transition: max-height 0.5s ease-out;
+    }
+    >.row.hei-full{
+        overflow: hidden;
+    }
+}
+.box-add-inner {
+    position: absolute;
+    top: 48px;
+    left: 1.5%;
+    z-index: 10;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.349019607843137);
+    // overflow: hidden;
+    opacity: 0;
+    transform: translateY(-200%);
+}
+.box-add{
+    position: relative;
+    border-radius: 6px;
+    height: 326px;
+    width: 362px;
+    background-color: #ffffff;
+    // &:before{
+    //     position: absolute;
+    //     content: " ";
+    //     width: 33px;
+    //     height: 33px;
+    //     border: none;
+    //     border-radius: 0px;
+    //     background-color: #e7503c;
+    //     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.349019607843137);
+    //     transform: rotate(45deg);
+    //     z-index: -1;
+    //     left: 46.8%;
+    //     top: -5px;
+    // }
+}
+.box-add .arrow-top{
+    position: absolute;
+    width: 33px;
+    height: 33px;
+    border: none;
+    border-radius: 0px;
+    background-color: #333333;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.349019607843137);
+    transform: rotate(45deg);
+    z-index: -1;
+    left: 45.7%;
+    top: -5px;
+}
+.box-add-header{
+    background-color: #333333;
+    font-weight: 700;
+    font-size: 15px;
+    color: #FFFFFF;
+    height: 40px;
+    line-height: 42px;
+    text-align: center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.box-add-content{
+    padding: 20px;
+    height: 205px;
+    border-bottom: 1px solid #e4e4e4;
+}
+.infor-item {
+    margin-right: 0;
+    margin-left: 0;
+}
+.infor-item .col-auto {
+    padding: 0;
+}
+.infor-item .infor--label{
+    color: #868686;
+    // display: inline-flex;
+    width: 85px;
+    padding: 8px 0;
+}
+// .infor-item .infor--inpt{
+//     display: inline-flex;
+// }
+.infor-item input{
+    padding: 0 1px;
+    /* color: #999999; */
+    height: 25px;
+    border: 1px solid #a9a9a9;
+    // width: 100%;
+    width: 237px;
+    margin: 5px 0;
+}
+.infor-item .infor--inpt .inpt-name{
+    font-weight: 700;
+    font-size: 15px;
+    // width: 171px;
+}
+.infor-item .infor--inpt .inpt-address{
+    margin-bottom: 0;
+}
+.infor-item .infor--inpt .w-30 {
+    width: 30px;
+    margin-right: 3px;
+    text-align: center;
+}
+.infor-item .infor--inpt .w-57 {
+    width: 57px;
+}
+.infor-item .infor--inpt .w-104 {
+    width: 104px;
+    // margin-right: 10px;
+}
+.infor-item .infor--inpt .w-115 {
+    width: 115px;
+    margin-right: 10px;
+}
+.infor-item .infor--inpt .w-130 {
+    width: 130px;
+    margin-right: 10px;
+}
+.infor-item .infor--inpt .w-192 {
+    width: 192px;
+}
+.infor-item .infor-select {
+    width: 44px;
+    margin-right: 10px;
+    height: 25px;
+    color: #868686;
+}
+/* input placeholder */
+.inpt-name::-moz-placeholder {
+    color: #999999 !important;
+    font-weight: 700;
+}
+.inpt-name:-ms-input-placeholder {
+    color: #999999 !important;
+    font-weight: 700;
+}
+.inpt-name::-webkit-input-placeholder {
+    color: #999999 !important;
+    font-weight: 700;
+}
+.infor-item .infor--label-email{
+    color: #868686;
+    display: inline-flex;
+    margin-right: 10px;
+    width: 34px;
+}
+.groups-btn-add{
+    margin: 25px 0;
+    position: relative;
+}
+.btn-add-cus,
+.btn-cancel-cus{
+    position: absolute;
+    top: 0;
+    border-radius: 4px;
+    height: 40px;
+    box-shadow: none;
+    font-size: 15px;
+    color: #FFFFFF;
+    outline: none;
+    margin: 10px 0 0 0;
+    padding: 0;
+    line-height: 39px;
+    border: 0;
+}
+.btn-add-cus:hover,
+.btn-add-cus:active,
+.btn-cancel-cus:hover,
+.btn-cancel-cus:active{
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.349019607843137);
+}
+.btn-add-cus{
+    background-color: #ea5b44;
+    width: 144px;
+    left: 0;
+}
+.btn-cancel-cus{
+    background-color: #999999;
+    width: 80px;
+    right: 0;
+}

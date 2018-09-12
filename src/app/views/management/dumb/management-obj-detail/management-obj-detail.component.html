@@ -1,0 +1,116 @@
+<!-- <div class="container"> -->
+  <div class="row content-sub-inner">
+    <div class="col-auto content--detail" [class.active]="isMoveOver" (mouseover)="moveOverToEdit()" (mouseleave)="moveOutNotEdit()"
+      (click)="clickOverToEdit()">
+      <div class="detail--line-top">
+        <div class="detail--line-ava">
+          <i class="fa fa-camera" aria-hidden="true"></i>
+        </div>
+        <div class="detail--line-inpt">
+          <input class="inpt-name" matInput placeholder="Tên khách hàng" value="Laura Murphy">
+        </div>
+        <button class="detail--line-icon" mat-button title="Hỗ trợ 24/7">
+          <i class="fa fa-phone" aria-hidden="true"></i>
+        </button>
+        <button class="detail--line-icon" mat-button title="Hỗ trợ 24/7">
+          &nbsp;
+          <i class="fa fa-envelope" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="detail--line">
+        <div class="detail--line-label">Cellphone</div>
+        <div class="detail--line-inpt">
+          <input class="inpt-normal w-25" matInput value="+1">
+          <input class="inpt-normal inpt--after w-90" matInput value="647-886-7886">
+        </div>
+      </div>
+      <div class="detail--line">
+        <div class="detail--line-label">Email</div>
+        <div class="detail--line-inpt">
+          <input class="inpt-normal w-210" matInput value="LauraMurphy@gmail.com">
+        </div>
+      </div>
+      <div class="detail--line-address">
+        <div class="detail--line-label">Address</div>
+        <div class="detail--line-inpt w-210">
+          <input class="inpt-normal w-210" matInput value="1 Roughwood Ct.">
+          <input class="inpt-normal w-86" matInput value="Toronto">
+          <select class="detail--line-select w-47">
+            <option value="--">--</option>
+            <option value="AB">AB</option>
+            <option value="BC">BC</option>
+            <option value="MB">MB</option>
+            <option value="NB">NB</option>
+            <option value="NL">NL</option>
+            <option value="NS">NS</option>
+            <option value="NT">NT</option>
+            <option value="NU">NU</option>
+            <option selected="" value="ON">ON</option>
+            <option value="PE">PE</option>
+            <option value="QC">QC</option>
+            <option value="SK">SK</option>
+            <option value="YT">YT</option>
+          </select>
+          <input class="inpt-normal w-57" matInput value="M3L2M4">
+        </div>
+      </div>
+      <div class="detail--line detail--line-dob">
+        <div class="detail--line-label">DOB</div>
+        <div class="detail--line-inpt w-210">
+          <select class="detail--line-select w-86">
+            <option selected="" value="Month...">Month...</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+          </select>
+          <select class="detail--line-select w-47">
+            <option selected="" value="Day">Day</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+          <select class="detail--line-select w-57">
+            <option selected="" value="Year">Year</option>
+            <option value="1992">1992</option>
+            <option value="1993">1993</option>
+            <option value="1994">1994</option>
+          </select>
+        </div>
+      </div>
+      <div class="detail--line-note">
+        <div class="detail--line-label">Ghi chú</div>
+        <textarea class="detail--line-textarea w-210" rows="5"></textarea>
+      </div>
+    </div>
+    <div class="col-auto content--history">
+      <div class="history--title">LỊCH SỬ</div>
+      <div class="history--line">
+        <div class="history--line-icon-box" title="Book lịch hẹn">+</div>
+        <div class="history--line-total">
+          <span>Tổng số: </span>
+          <span class="text-bold">5 lịch hẹn </span>-
+          <span class="text-bold"> $550</span>
+        </div>
+      </div>
+      <div class="history--line" *ngFor="let item of [1,2,3,4,5]">
+        <div class="history--line-icon">
+          <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+        </div>
+        <div class="history--line-descript">
+          <div>Oct 10, 2018 - 1:00 pm</div>
+          <div class="descript-content">
+            <span>Pedicure, Foot massage - $110 - With </span>
+            <span class="text-bold">Hiep Tran</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- </div> -->

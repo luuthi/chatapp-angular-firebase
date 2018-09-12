@@ -1,0 +1,36 @@
+:host{
+    &:first-child{
+        .item-mes{
+            margin-top: 10px;
+        }
+    }
+    // &:last-child{
+    //     .item-mes{
+    //         margin-bottom: 10px;
+    //     }
+    // }
+}
+.item-mes{
+    margin-right: 0;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    .mes--content{
+        border-radius: 6px;
+        width: 200px;
+        text-align: left;
+        background: #efeeee;
+        padding: 3px 6px;
+        &.left{
+            background-color: #efeeee;
+            color: #333333;
+        }
+        &.right{
+            background-color: #ea5b44;
+            color: #FFFFFF;
+        }
+    }
+    .mes-time{
+        font-size: 11px;
+        color: #999999;
+    }
+}

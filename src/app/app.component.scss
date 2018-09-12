@@ -1,0 +1,240 @@
+
+
+.cal-month-view .cal-day-cell{
+    height: auto !important;
+}
+.bookable-content{
+    width: 100%;
+    position: relative;
+}
+mat-toolbar.toolbar {
+    position: fixed!important;
+    top: 0;
+    z-index: 99;
+    height: 50px !important;
+    background: #ea5b44;
+    position: relative;
+}
+mat-toolbar .tab-menu .material-icons{
+    font-size: 18px;
+    margin-right: 3px;
+}
+mat-toolbar .tab-menu.active{
+    background: rgba(0, 0, 0, 0.2);
+    color:#fff;
+}
+mat-toolbar .tab-menu:hover{
+    text-decoration: none;
+    background: rgba(0,0,0,0.05);
+    color: #fff;
+}
+mat-toolbar .tab-menu{
+    display: inline-flex;
+    align-items: center;
+    line-height: 50px;
+    color: #F6BDB4;
+    font-size: 15px;
+    padding: 0px 20px;
+    font-weight: 400;
+    transition: 0.3s;
+}
+.tab-toolbar, .button-toolbar{
+    text-align: right;
+    color: #fff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.button-toolbar button{
+    padding:0px 7px ;
+    line-height: 30px;
+    height: 30px;
+    min-width: auto !important;
+    margin: 0px 7px;
+    transition: 0.3s;
+    &.btn-help span{
+        margin-left: 5px;
+    }
+    &.btn-user{
+        background: #fff;
+        border-radius: 50%;
+        color: #ea5b44;
+        width: 30px;
+        text-align: center;
+        padding: 0px;
+        &:hover{
+            background: #fff;
+        }
+        i{
+            font-size: 22px !important;
+        }
+    }
+}
+.button-toolbar{
+    .btn-upgrade{
+        position: relative;
+        &:hover{
+            .upgrade-wrapper{
+                display: block;
+            }
+        }
+        .upgrade-wrapper{
+            position: absolute;
+            width: 330px;
+            left: 50%;
+            top: 40px;
+            transform: translateX(-50%);
+            background: #333;
+            z-index: 999;
+            font-size: 13px;
+            padding: 10px;
+            text-align: left;
+            font-weight: normal;
+            border-radius: 5px;
+            display: none;
+            transition: 0.5s;
+            ul{
+                padding: 0px;
+                white-space: normal;
+                list-style: none;
+                li{
+                    line-height: 1.6em;
+                }
+            }
+            button{
+                display: block;
+                margin: 0px auto 5px;
+                background: #ea5b44;
+                color: #fff;
+                line-height: 30px;
+                height: 30px;
+                border-radius: 4px;
+            }
+        }
+    }
+    .btn-toolbar-item{
+        position: relative;
+        &:hover{
+            .btn-toolbar-item-wrapper{
+                display: block;
+            }
+        }
+        .btn-toolbar-item-wrapper{
+            transition: 0.5s;
+            display: none;
+            position: absolute;
+            right: 0px;
+            width: 240px;
+            background: #fff;
+            z-index: 999;
+            top: 45px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.35);
+            border-radius: 4px;
+            &.btn-help-wrapper{
+                &:after{
+                    right: 20%;
+                }
+            }
+            &:after{
+                content: '';
+                width: 10px;
+                top: -18px;
+                z-index: 8;
+                position: absolute;
+                right: 5%;
+                border-top: 9px solid transparent;
+                border-left: 9px solid transparent;
+                border-bottom: 9px solid #333333;
+                border-right: 9px solid transparent;
+            }
+            mat-list{
+                padding: 0px;
+                overflow: hidden;
+                .item-name{
+                    line-height: 40px;
+                    color: #fff;
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+                    background: #333;
+                }
+                .item{
+                    line-height: 45px;
+                    border-bottom: 1px solid #e4e4e4;
+                    transition: 0.3s;
+                    font-weight: normal;
+                    span.item-phone{
+                        display: block;
+                        line-height: 24px;
+                        a{
+                            color: #333;
+                        text-decoration: none;
+                        font-weight: bold;
+                        }
+                    }
+                    &.item-help{
+                        i{
+                            color: #ea5b44;
+                        }
+                        &:last-child{
+                            .item-title{
+                                text-align: left;
+                                line-height: 24px;
+                            }
+                        }
+                    }
+                    &:hover{
+                        background: #ea5b44;
+                        color: #fff;
+                        i{
+                            color: #fff !important;
+                        }
+                        span.item-phone a{
+                            color: #fff !important;
+                        }
+                    }
+                    &:last-child{
+                        border-bottom: 0px;
+                        border-bottom-left-radius: 4px;
+                        border-bottom-right-radius: 4px;
+                    }
+                    .item-icon{
+                        display: flex;
+                        align-items: center;
+                        i{
+                            font-size: 20px;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.button-toolbar button i{
+    font-size: 18px;
+}
+.tab-toolbar, .button-toolbar button:hover{
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.35);
+    background: #ea5b44;
+}
+.logo-toolbar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+.bookable-content mat-tab-header{
+    position: absolute !important;
+    top: 0px !important;
+    width: 45% !important;
+    left: 10% !important;
+}
+
+/* style book-table */
+app-book-table{
+    width: 100%;
+}
+
+.app-chat {
+    visibility: hidden;
+}

@@ -1,0 +1,83 @@
+<div class="container container-management">
+  <div class="row">
+    <!-- Left menu (Group) -->
+    <!-- &nbsp; -->
+    <div class="col-auto menu-sidebar-left">
+      <div class="item-menu-sidebar active" [class.active]="menuActive == 'customer'" (click)="clickMainMenu('customer')" >
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <div class="item-menu--title">Khách hàng</div>
+      </div>
+      <div class="item-menu-sidebar" [class.active]="menuActive == 'staff'" (click)="clickMainMenu('staff')">
+        <i class="fa fa-user-md" aria-hidden="true"></i>
+        <div class="item-menu--title">Nhân viên</div>
+      </div>
+      <div class="item-menu-sidebar" [class.active]="menuActive == 'service'" (click)="clickMainMenu('service')">
+        <i class="fa fa-truck" aria-hidden="true"></i>
+        <div class="item-menu--title">Dịch vụ</div>
+      </div>
+      <div class="item-menu-sidebar" [class.active]="menuActive == 'config'" (click)="clickMainMenu('config')">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+        <div class="item-menu--title">Cài đặt chung</div>
+      </div>
+      <div class="item-menu-sidebar" [class.active]="menuActive == 'subscribe'" (click)="clickMainMenu('subscribe')">
+        <div class="item-menu--title">Subscribe/Nâng cấp</div>
+      </div>
+    </div>
+    <!-- content of main Left menu (Group) -->
+    <div class="col">
+      <div class="content-right row pd-l-25">
+        <!-- title content -->
+        <div class="col-12 content-right--title">{{nameContent}}</div>
+        <div class="w-100"></div>
+        <!-- sidebar left sub -->
+        <div class="col-auto sidebar-left-sub">
+          <!-- search box & btn add-->
+          <div class="sbleft-sub--top">
+            <input class="sbleft-sub-top-inpt" matInput placeholder="Tìm kiếm khách hàng" value="">
+            <button class="btn-add" mat-raised-button (click)="actionAdd()">
+              <!--  matTooltip="Thêm khách hàng" matTooltipPosition="right" -->
+              <i class="fa fa-user-plus" aria-hidden="true"></i> Thêm
+            </button>
+            <app-management-customer-add [class.show]="isShowAdd" [class.hide]="isClickedAdd && !isShowAdd" (actionAdd)="actionAdd()" ></app-management-customer-add>
+          </div>
+          <!-- list customer -->
+          <div class="sbleft-sub--costomers">
+            <div class="item-customer" *ngFor="let item of [1,2,3,4,5]" [class.active]="selectedPersone == item" (click)="viewDetail(item)" >
+              <div class="customer-ava">L</div>
+              <div class="customer-name">Laura Murphy</div>
+              <button class="btn-del" mat-raised-button>
+                <i class="fa fa-trash" aria-hidden="true"></i> <span>Xoá</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto no-pd" *ngIf="menuActive == 'staff' && selectedPersone">
+          <div class="menu-staff-inner">
+            <div class="menu-staff-item" [class.active]="menuStaff == 'detail'" (click)="clickMenuStaff('detail')">
+              <div class="ms-item--icon"><i class="fa fa-user-md" aria-hidden="true"></i></div>
+              <div class="ms-item--name">Chi tiết</div>
+            </div>
+            <div class="menu-staff-item" [class.active]="menuStaff == 'service'" (click)="clickMenuStaff('service')">
+              <div class="ms-item--icon"><i class="fa fa-truck" aria-hidden="true"></i></div>
+              <div class="ms-item--name">Dịch vụ</div>
+            </div>
+            <div class="menu-staff-item" [class.active]="menuStaff == 'work'" (click)="clickMenuStaff('work')">
+              <div class="ms-item--icon"><i class="fa fa-clock-o" aria-hidden="true"></i></div>
+              <div class="ms-item--name">Giờ làm</div>
+            </div>
+            <div class="menu-staff-item" [class.active]="menuStaff == 'relax'" (click)="clickMenuStaff('relax')">
+              <div class="ms-item--icon"><i class="fa fa-coffee" aria-hidden="true"></i></div>
+              <div class="ms-item--name">Giờ nghỉ</div>
+            </div>
+          </div>
+        </div>
+        <!-- content of sidebar left sub -->
+        <!-- <div class="col-8"> -->
+        <div class="col-auto" [class.content-sub-bg]="menuActive == 'staff'" [class.no-pd]="menuActive == 'staff'">
+          <app-management-obj-detail *ngIf="menuStaff == 'detail' && selectedPersone"></app-management-obj-detail>
+          <app-management-list-service *ngIf="menuStaff == 'service' && selectedPersone"></app-management-list-service>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

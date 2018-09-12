@@ -1,0 +1,138 @@
+
+  
+
+
+<div class="wrapper" [class.blur]="isLoading" *ngIf="(currentTime$ | async) as now">
+
+
+    <div class="group-data">
+
+
+      <div #timetable1 id="timetable1" class="book-table book-table-th" style="height:50px">
+      <!-- time column -->
+      <div (click)="domFnService.scrollToRed()" class="sidebar-time currentTime" style="width: 50px;min-width: 50px;">
+          <span> {{now | date:'h:mm' }}</span>
+      </div>
+      <div class="employee-name"[attr.name]="name" [style.min-width]="appointmentStyle.width + 'px'" *ngFor="let name of employeeName">
+          {{name}}
+      </div>
+
+      <div [style.min-width]="scrollBarWidth + 'px'">
+
+      </div>
+      </div>
+
+      <!-- appointment overlay -->
+      <div fxLayout="row" class="appointment-coating">
+          <ng-container *ngFor="let appointment of calendar; let i = index">
+            <!-- {{appointment.customer}} -->
+              <div 
+              class="appointment-overlay busyBackground" 
+              [id]="'appointment-' + appointment.id"
+              [attr.top] = "+appointment.top"
+              [attr.bottom] = "+appointment.top + +appointment.height"
+              [ngClass]="{
+                'pending': appointment.status == 'pending',
+                'confirmed': appointment.status == 'confirmed'
+              }"
+              [ngStyle]="{
+                'width': appointmentStyle.width + 'px',
+                'height':appointment.height + 'px',
+                'top':appointment.top + 'px',
+                'left':appointment.left + 'px',
+                'background':appointment.status == 'pending' ? '#FFE1C9': '#C1E7E0',
+                'border-color': appointment.status == 'pending' ? '#FFE1C9': '#C1E7E0',
+                'border-left': appointment.status == 'pending' ? '5px solid #ff8728': '5px solid #039D83',
+                'color': appointment.background ? 'white' : '',
+                'z-index': isDraggingId  == i? 1: 0
+              }"   
+              mwlResizable
+          
+              #element
+              [resizeCursorPrecision]="5"
+              [enableGhostResize]="true"
+              [resizeEdges]="{bottom: true}"
+              (resizeStart)="onResizeStart($event, appointment.name, i, element)"
+              (resizing)="onResizing($event)"
+              (resizeEnd)="onResizeEnd($event, appointment.name, i)"
+              (dragstart)="dragStart($event, appointment.name, i)" 
+              (drag)="draging($event,$event.pageY)"
+              (dragend)="dragEnd($event, appointment.name, i)"
+
+              [draggable]="true" 
+              >
+              <div class="ghost-time" mwlResizeHandle> 
+                 <ng-container *ngIf="isDraggingId  == i  else textTime">
+                    <div class="textTime"></div>
+                 </ng-container>
+                 <ng-template #textTime>
+                    {{appointment.customer}}
+                  <p>
+                     <ng-container *ngFor="let service of appointment.services">
+                       {{tableDataService.services[service].name}}
+                     </ng-container>
+                     {{appointment.price}}$
+                  </p>
+                 </ng-template>
+              </div>
+            </div>
+          </ng-container>
+              
+      </div>
+      
+      <div #timetable2 id="timetable2" fxLayout="row" style="display:flex;" class="timetable">
+          <table cdk-table [dataSource]="dataSource" class="book-table" border>
+            <!-- time column -->
+            <ng-container [cdkColumnDef]="'date'">
+              <th style="width: 50px" cdk-header-cell *cdkHeaderCellDef> </th>
+              <td style="width: 50px" class="sidebar-time"  cdk-cell *cdkCellDef="let element" [class.redline-cell]="sidebarTimeService.isSameHour(now,element)"> 
+                  <span *ngIf="sidebarTimeService.roundHour(element.start) as round" [attr.roundHour]="round? element.start: null">{{element.start <= 12 ? element.start: (element.start-12)}} {{element.start < 12 ? 'am':'pm'}}</span> 
+                  <div [ngStyle]="{top: (now.getMinutes()%15)*4/3 + 'px'}" [class.redline]="sidebarTimeService.isSameHour(now,element)">
+                      <span class="clock" *ngIf="sidebarTimeService.isSameHour(now,element)" >{{now | date:'h:mm a' }}</span>
+                      <span #redline id="redline" *ngIf="sidebarTimeService.isSameHour(now,element)"></span>
+                  </div>
+              </td>
+            </ng-container>
+            <!-- employee column -->
+            <ng-container [cdkColumnDef]="name" *ngFor="let name of employeeName">
+              <th  [style.width]="appointmentStyle.width + 'px'" cdk-header-cell *cdkHeaderCellDef></th>
+              <ng-container cdk-cell *cdkCellDef="let element; let rowIndex = index">
+                <td 
+                class="bookable-cell employee-name"
+                [ngClass]="{
+                  'scroll-to': element.start == openTime
+                }"
+                [attr.name]="name"
+                [style.min-width]="appointmentStyle.width + 'px'"
+                >
+                  <div class="number-time" [style.opacity]="rowIndex%4 == 0 ? '1':'0' ">
+                        {{element.start <= 12 ? element.start: (element.start-12)}} {{element.start < 12 ? 'am':'pm'}}
+                  </div>
+      
+                </td>
+              </ng-container>
+            </ng-container>
+            <!-- scrollbar-column -->
+            <ng-container [cdkColumnDef]="'scrollbar'">
+              <th  [style.width]="isMacintosh() ?'10px':'0px'" cdk-header-cell *cdkHeaderCellDef> </th>
+              <td cdk-cell *cdkCellDef="let element" [style.width]="isMacintosh() ?'10px':'0px'"> 
+              </td>
+            </ng-container>
+            <!-- show row: table body + table footer -->
+      
+            <!-- <tr style="visibility: collapse" class="book-table-th" cdk-header-row *cdkHeaderRowDef="displayedDataColumns;"></tr> -->
+            <tr cdk-row *cdkRowDef="let row; columns: displayedDataColumns;" class="book-table-row"></tr>
+          </table>
+      </div>
+  </div>
+  
+</div>
+
+<!-- <ng-template #loading> -->
+<div [ngStyle]="{
+  'opacity': isLoading ? 1:0,
+  'z-index': isLoading ? 9999:-1
+}" class="loading-overlay">
+    <mat-spinner class="spinner-center"></mat-spinner>
+</div>
+<!-- </ng-template> -->

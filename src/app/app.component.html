@@ -1,0 +1,128 @@
+<div class="bookable-admin-wrapper" (click)="$event.stopPropagation()">
+  <div class="bookable-content">
+    <mat-toolbar class="toolbar" fxLayout="row">
+      <div class="logo-toolbar">
+        <img src="assets/logo.png" alt="" width="120px">
+      </div>
+      <div>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="tab-menu">
+          <i class="material-icons">calendar_today</i>
+          Lịch hẹn
+        </a>
+        <a routerLink="/management" routerLinkActive="active" class="tab-menu">
+          <i class="material-icons">people</i>
+          Quản lý
+        </a>
+      </div>
+      <div class="button-toolbar" fxFlex="90" text-right>
+        <div class="btn-upgrade">
+          <button mat-button>Nâng cấp</button>
+          <div class="upgrade-wrapper">
+            <span>Nâng cấp gói tính năng để bạn có thể</span>
+            <ul>
+              <li>- Chat với khách hàng ngay trên giao diện Quản Lý Lịch hẹn</li>
+              <li>- Tự động lặp lại booking cho khách theo chu kỳ. </li>
+              <li>- Hệ thống tích điểm Reward Points cho khách.</li>
+              <li>- Remind nhân viên về lịch hẹn.</li>
+              <li>- Và rất nhiều tính năng thông minh khác...</li>
+            </ul>
+            <button>Tìm hiểu thêm các gói tính năng nâng cấp</button>
+          </div>
+        </div>
+        <div class="btn-help btn-toolbar-item">
+          <button mat-button class="btn-help-icon">
+            <i class="material-icons">
+              help
+            </i>
+            <span>Hỗ trợ 24/7</span>
+          </button>
+          <div class="btn-help-wrapper btn-toolbar-item-wrapper">
+            <mat-list>
+              <mat-list-item class="item-name">
+                Hỗ trợ 24/7
+              </mat-list-item>
+              <mat-list-item class="item-help item">
+                <span class="item-icon">
+                  <i class="material-icons">
+                    mail
+                  </i>
+                </span>
+                <div class="item-title">
+                  Chat với Bookable team 24/7
+                </div>
+              </mat-list-item>
+              <mat-list-item class="item-help item">
+                <span class="item-icon">
+                  <i class="material-icons">
+                    phone
+                  </i>
+                </span>
+                <div class="item-title">
+                  Gọi Bookable team 24/7 :
+                  <span class="item-phone">Canada/US : <a href="tel:+16478867886">+1 (647) 886 7886</a></span>
+                  <span class="item-phone">Vietnam : <a href="tel:+84975626296">+84 97 562 6296</a></span>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+        <div class="btn-account btn-toolbar-item">
+          <button mat-button class="btn-user"><i class="material-icons">person</i></button>
+          <div class="btn-account-wrapper btn-toolbar-item-wrapper">
+            <mat-list>
+              <mat-list-item class="item-name">
+                Tài khoản - Lantern Spa
+              </mat-list-item>
+              <mat-list-item class="item-account item">
+                <span class="item-icon">
+                  <i class="material-icons">
+                    settings
+                  </i>
+                </span>
+                <div class="item-title">
+                  Cài đặt chung
+                </div>
+              </mat-list-item>
+              <mat-list-item class="item-account item">
+                <span class="item-icon">
+                  <i class="material-icons">
+                    call_made
+                  </i>
+                </span>
+                <div class="item-title">
+                  Nâng cấp gói tính năng
+                </div>
+              </mat-list-item>
+              <mat-list-item class="item-account item">
+                <span class="item-icon">
+                  <i class="material-icons">
+                    assignment_return
+                  </i>
+                </span>
+                <div class="item-title">
+                  Sign Out ( Đăng xuất )
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </div>
+    </mat-toolbar>
+  </div>
+</div>
+<router-outlet></router-outlet>
+
+<div class="fab-messages-inner">
+  <div class="fab-messages">
+    <app-chat class="app-chat"  [style.visibility]="(chatService.domReady$ | async) ? 'visible': 'hidden'" [class.show]="chatService.status.chat.value" [class.hide]="chatService.status.chat.value == false"></app-chat>
+    <!-- <app-chat></app-chat> -->
+    <div class="fab-btn-mes" [class.show]="chatService.status.chat.value">
+      <button id="btn-messages" class="btn-messages" mat-fab matTooltip="Tin nhắn" matTooltipPosition="left"
+        [@flipInFade]="chatService.status.chat.value">
+        <i class="fa fa-envelope" [style.display]="!chatService.status.chat.value ? 'block': 'none'" aria-hidden="true"></i>
+        <i class="fa fa-times" [style.display]="chatService.status.chat.value ? 'block': 'none'" aria-hidden="true"></i>
+      </button>
+      <div class="badge-messages">2</div>
+    </div>
+  </div>
+</div>

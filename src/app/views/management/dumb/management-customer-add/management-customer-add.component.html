@@ -1,0 +1,68 @@
+<div class="box-add-inner">
+  <div class="box-add">
+    <div class="arrow-top"></div>
+    <div class="box-add-header">
+      Thêm khách hàng mới
+    </div>
+    <div class="box-add-content">
+      <div class="row align-items-center infor-item">
+        <div class="col-auto">
+          <div class="infor--label">Khách hàng</div>
+        </div>
+        <div class="col-auto infor--inpt">
+          <input class="inpt-name" matInput placeholder="Name">
+        </div>
+      </div>
+      <div class="row align-items-center infor-item">
+        <div class="col-auto">
+          <div class="infor--label">Mobile</div>
+        </div>
+        <div class="col-auto infor--inpt">
+          <input class="inpt-normal w-30" matInput value="+1">
+          <input class="inpt-normal w-104" matInput placeholder="Cellphone">
+        </div>
+      </div>
+      <div class="row align-items-center infor-item">
+        <div class="col-auto">
+          <div class="infor--label">Email</div>
+        </div>
+        <div class="col-auto infor--inpt">
+          <input class="inpt-normal" matInput placeholder="Email">
+          <!--  w-192 -->
+        </div>
+      </div>
+      <div class="row infor-item">
+        <div class="col-auto">
+          <div class="infor--label">Address</div>
+        </div>
+        <div class="col-auto infor--inpt">
+          <input class="inpt-normal inpt-address" matInput placeholder="Address">
+          <div class="infor--inpt">
+            <input class="col-auto inpt-normal w-115" matInput placeholder="City">
+            <select class="col-auto infor-select">
+              <option selected="" value="--">--</option>
+              <option value="AB">AB</option>
+              <option value="BC">BC</option>
+              <option value="MB">MB</option>
+              <option value="NB">NB</option>
+              <option value="NL">NL</option>
+              <option value="NS">NS</option>
+              <option value="NT">NT</option>
+              <option value="NU">NU</option>
+              <option value="ON">ON</option>
+              <option value="PE">PE</option>
+              <option value="QC">QC</option>
+              <option value="SK">SK</option>
+              <option value="YT">YT</option>
+            </select>
+            <input class="col-auto inpt-normal w-57" matInput placeholder="Postal">
+          </div>
+        </div>
+      </div>
+      <div class="groups-btn-add">
+        <button mat-button class="btn-add-cus">Thêm khách hàng</button>
+        <button mat-button class="btn-cancel-cus" (click)="actionAdd.emit()">Huỷ</button>
+      </div>
+    </div>
+  </div>
+</div>

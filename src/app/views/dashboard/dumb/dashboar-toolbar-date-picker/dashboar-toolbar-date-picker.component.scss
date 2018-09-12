@@ -1,0 +1,6 @@
+mat-form-field.datepicker-wrapper{
+    display: none;
+    & input {
+        display: none;
+    }
+}

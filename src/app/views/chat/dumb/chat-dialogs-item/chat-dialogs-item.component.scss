@@ -1,0 +1,67 @@
+:host {
+    width: 309px;
+    display: block;
+}
+.item-dialog{
+    height: 55px;
+    border-bottom: 1px solid #f2f2f2;
+    width: 100%;
+    margin: 0;
+    cursor: pointer;
+    &:hover,
+    &.active{
+        background-color: #eaf0f9;
+    }
+    .dialog--ava-inner{
+        padding: 0 !important;
+        .dialog--ava{
+            height: 30px;
+            width: 30px;
+            margin: 0 0 0 10px;
+            border-radius: 50%;
+            background-color: #07b39c;
+            color: #fff;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-items: center;
+            justify-content: center;
+            .ava--box{
+                height: 20px;
+                min-height: 20px;
+                min-width: 20px;
+                width: 20px;
+                display: inline-flex;
+                align-items: center;
+                justify-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background-color: #000000;
+            }
+        }
+    }
+    .dialog--descript{
+        padding: 0 10px !important;
+        width: 206px;
+        .dialog--name,
+        .dialog--short-dialog{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .dialog--name{
+            font-weight: 700;
+        }
+        .dialog--short-dialog{
+            color: #999999;
+        }
+    }
+    .dialog-time{
+        font-size: 12px;
+        color: #999999;
+        text-align: right;
+        // padding: 9px calc((100% - 286px)/2) 0 calc((100% - 286px)/2);
+        padding: 9px 0 0 0;
+        width: calc(100% - 266px);
+    }
+}

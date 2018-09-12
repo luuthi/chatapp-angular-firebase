@@ -1,0 +1,34 @@
+<div class="messages-inner" [@flyInFade]="flyInFade">
+  <div class="mes--toolbar-header">
+    <i class="fa fa-angle-left" aria-hidden="true" (click)="actionBack.emit()"></i>
+    <div class="mes--header">
+      <div class="header--ava">
+        <div class="ava--box">L</div>
+      </div>
+      <div class="header--name">Laura Murphy</div>
+    </div>
+  </div>
+  <div class="action-hover-inner">
+    Chăm sóc khách hàng:
+    <i class="fa fa-phone" aria-hidden="true"></i> +1 (647) 886 7886
+  </div>
+  <div class="list-mess" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+    <app-chat-messages-item [isCurrentUser]="false"></app-chat-messages-item>
+    <app-chat-messages-item [isCurrentUser]="false"></app-chat-messages-item>
+    <app-chat-messages-item [isCurrentUser]="false"></app-chat-messages-item>
+    <app-chat-messages-item [isCurrentUser]="true"></app-chat-messages-item>
+  </div>
+</div>
+<!-- compose message -->
+<div class="compose-mes-inner">
+  <div class="row">
+    <div class="col-auto">
+      <input class="compose-mes-inpt" matInput placeholder="Soạn tin nhắn...">
+    </div>
+    <div class="col-auto">
+      <button class="btn-send-mes">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>

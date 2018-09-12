@@ -1,0 +1,79 @@
+.list-statistic{
+    background: #fff;
+    width: 270px;
+    top: 50px !important;
+    transform: translateX(-96.5%) !important;
+    .list-statistic-header::after{
+        right: 5px;
+        left: auto !important;
+    }
+}
+ .list-statistic .list-statistic-content{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+ .list-statistic .statistic-item .statistic-number{
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+}
+ .list-statistic .statistic-item{
+    padding: 13px 15px;
+    border-bottom: 1px solid #f2f2f2;
+}
+ .list-statistic .statistic-item .statistic-sub{
+    padding: 0px;
+    margin: 0px -15px;
+    list-style: none;
+}
+ .list-statistic .statistic-item .statistic-sub li{
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 0px;
+    margin-top: 13px;
+    padding-left: 40px;
+}
+ .list-statistic .statistic-item .statistic-sub li:last-child{
+    margin-top: 0px;
+    padding-bottom: 0px;
+}
+ .list-statistic .statistic-item.statistic-really{
+    font-weight: bold;
+    background: #09a78f;
+    color: #fff;
+}
+ .list-statistic .list-statistic-header{
+     background: #333333;
+     justify-content: space-between;
+    }
+.list-statistic .list-statistic-header i:hover{
+    color: #333;
+    background: #ffffff;
+}
+.list-statistic .list-statistic-header i{
+    font-size: 18px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+ .list-statistic .list-statistic-header:after{
+    border-bottom: 9px solid #333;
+}
+.list-statistic .list-statistic-remove{
+    background: #e4e4e4;
+    padding: 5px 15px;
+}
+.mat-radio-button{
+    margin: 5px 15px 0px;
+    .mat-radio-outer-circle, .mat-radio-inner-circle{
+        width: 15px;
+        height: 15px;
+        
+    }
+
+}

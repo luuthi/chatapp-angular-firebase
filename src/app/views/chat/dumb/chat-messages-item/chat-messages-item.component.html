@@ -1,0 +1,9 @@
+<div class="row item-mes">
+  <div class="col-auto mes--content" [class.left]="!isCurrentUser" [class.right]="isCurrentUser" [class.order-1]="!isCurrentUser" [class.order-2]="isCurrentUser">
+    Lorem Ipsum eiusmod tempor magna aliqua. Lorem ipsum dolor sit amet.Icing elit, sed do eiusmod tempor dolor. {{isCurrentUser}}
+  </div>
+  <div class="col-auto mes-time align-self-center" [class.order-2]="!isCurrentUser" [class.order-1]="isCurrentUser" >
+    <div>Jun 9, 2018</div>
+    <div>9:21 AM</div>
+  </div>
+</div>
