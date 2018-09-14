@@ -44,11 +44,12 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
   @ViewChild('timetable2') public timetable2 : ElementRef;
   @ViewChild('redline') public redline;
   scrollBarWidth: number;
-
+  tableHeight;
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     let windowWidth = event.target.innerWidth;
-    console.log('resize event', windowWidth, event);
+    
+
     this.widthUpdateOnResize(this.calendar);
   }
 
@@ -88,12 +89,25 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
 
   currentTime$ = this.sidebarTimeService.createTimer();
 
-
+  renderCurrentTimeRange(appointment) {
+    let ghostElement = document.getElementsByClassName('textTime')[0];
+    console.log('ghostElement',ghostElement);
+    if (ghostElement) {
+      let timeString = this.resizeService.convertTimeToString(appointment.start,appointment.start + appointment.long);
+      // let nodeValue = document.createTextNode(`start: <strong>${timeString.start}</strong> </br> end: <strong>${timeString.end}</strong> </br> (${timeString.total} mins)`);
+      // ghostElement.replaceChild(nodeValue,ghostElement.childNodes[0]);
+      ghostElement.innerHTML = `Start: <strong>${timeString.start}</strong> </br> End: <strong>${timeString.end}</strong> </br> (${timeString.total} mins)`;
+    }
+  }
   
   dragStart(ev, name, i) {
-    this.cd.detach();
     this.isDraggingId = i;
+    this.cd.detectChanges();
+    this.cd.detach();
     let appointment = this.calendar[i];
+
+    this.renderCurrentTimeRange(appointment);
+
     // make ghost element on dragging invisible
     var crt = ev.target.cloneNode(true);
     crt.style.backgroundColor = "red";
@@ -104,7 +118,7 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
       this.calendar[i].opacity = 0.2;
     }
  
-    // console.log('current ev',ev)
+    console.log('current ev',ev)
     // change color element;
     this.renderer2.addClass(ev.target,'active-dragging-element');
 
@@ -141,13 +155,13 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
       this.calendar[i] = this.dndService.updateNameAndLeft(employeeElement,appointment);
       currentEmployeeElement = this.dndService.updateTableClass(employeeElement,currentEmployeeElement,this.renderer2);
       // this.cd.detectChanges();
-
-    })
+    },
+    (err) => console.warn('dragging err',err))
     
     // quan sát sự thay đổi toa do
     this.draggingEvent$ = new BehaviorSubject(ev);
     this.draggingText$ = new BehaviorSubject('');
-  
+
     let time = 130;
     this.move$ = this.draggingEvent$
     .pipe(
@@ -167,8 +181,8 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
       map(([last, now]) => {
         let height;
         let hourPerStep;
-
-        // console.log('now',now.event)
+        let direction = now.pageY - last.pageY < 0 ? 'up' : 'down';
+        console.log('direction',direction);
         
         let top = appointment.top;
         let elementPosWithWindowY = now.event.target.getBoundingClientRect().top + window.scrollY; // get current element compare to window
@@ -186,7 +200,7 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
         let cannotMoveUp = Math.ceil(top/height-1)*height < previousElementBottom;
         // console.log('cacultate previous element',previousElement)
         // console.log('cannotMoveUp...',top,Math.ceil(top/height-1)*height,previousElementBottom);
-        if (isNearPreviousElement && cannotMoveUp) {
+        if (isNearPreviousElement && cannotMoveUp && direction == 'up') {
           deltaY = previousElementBottom - top;
           // console.log('snaping to previous element mode')
         }  
@@ -197,9 +211,9 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
 
         let isNearNextElement = nextElementTop%height != 0 &&  currentBottom + deltaY <= Math.ceil(nextElementTop/height)*height; 
         let cannotMoveDown = Math.ceil(top/height+1)*height < nextElementTop;
-        console.log('cacultate next element',nextElement, nextElementTop%height != 0,currentBottom + deltaY,nextElementTop, Math.ceil(nextElementTop/height)*height )
+        console.log(' is next element',isNearNextElement, nextElement, nextElementTop%height != 0,currentBottom + deltaY,nextElementTop, Math.ceil(nextElementTop/height)*height )
         console.log('cannotMoveDown...',cannotMoveDown,top,Math.ceil(top/height+1)*height,nextElementTop);
-        if (isNearNextElement && cannotMoveDown) {
+        if (isNearNextElement && cannotMoveDown && direction == 'down') {
           deltaY = nextElementTop - currentBottom;
           // console.log('snaping to next element mode')
         }  
@@ -244,9 +258,9 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
 
         if (isNearPreviousElement || isNearNextElement) {
           moveBlock = deltaY/height;
-          // console.log('move block is detail',moveBlock)
+          console.log('move block is detail',moveBlock)
         } else {
-          // console.log('move block is normal',moveBlock)
+          console.log('move block is normal',moveBlock)
         }
 
         if (moveBlock == 0) {
@@ -258,11 +272,12 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
           newBlock = currentBlock + moveBlock;
         }
 
-        return {height,hourPerStep,newBlock,event}
+        return {height,hourPerStep,newBlock,event,moveBlock}
       }),
-      filter(({moveBlock}) => {
-        return moveBlock != 0
-      }),
+      //does't necessary if user moving block horizontal.. it not change block but move to different column
+      // filter(({moveBlock}) => {
+      //   return moveBlock != 0
+      // }),
       map(({height,hourPerStep,newBlock}) => {
         let newTop;
         let newHour;
@@ -273,20 +288,9 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
       map(({newTop,newHour}) => {
         appointment.start = newHour;
         appointment.top = newTop; 
-        let ghostElement = document.getElementsByClassName('textTime')[0];
-        console.log('ghostElement',ghostElement);
-        if (ghostElement) {
-          
-          let timeString = this.resizeService.convertTimeToString(appointment.start,appointment.start + appointment.long);
-          // let nodeValue = document.createTextNode(`start: <strong>${timeString.start}</strong> </br> end: <strong>${timeString.end}</strong> </br> (${timeString.total} mins)`);
-          // ghostElement.replaceChild(nodeValue,ghostElement.childNodes[0]);
-          ghostElement.innerHTML = `Start: <strong>${timeString.start}</strong> </br> End: <strong>${timeString.end}</strong> </br> (${timeString.total} mins)`;
-        }
-
-        // debugger;
-        
+        this.renderCurrentTimeRange(appointment);
         this.cd.detectChanges();
-        return {newHour  };
+        return {newHour};
       }),
       last()
     )
@@ -302,7 +306,7 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
           appointment.start = newHour
         }
       },
-      // () => console.log('dragging complete')
+      (err) => console.warn('dragging err',err)
     );
    
   }
@@ -315,6 +319,7 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
 
 
   draging(ev) {
+    // console.log('ev',ev)
     this.draggingEvent$.next(ev);
   }
 
@@ -331,6 +336,7 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
    * @param ev
    */
   dragEnd(ev,em, i) {
+    this.draggingEvent$.next(ev);
     this.isDraggingId = null;
     
     this.draggingElementEvent$ = null;
@@ -344,8 +350,8 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
 
     if (em != dropName) this.changeEmployee(em, i,dropName);
 
-    this.draggingElement$.complete();
     this.draggingEvent$.complete();
+    this.draggingElement$.complete();
     if (this.smoothMove$) this.smoothMove$.unsubscribe();
     
     this.renderer2.removeClass(currentEmployeeElement,'hover-column');
@@ -443,9 +449,9 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
 
   widthUpdateOnResize(calendar = this.tableDataService.calendar) {
     let element = <HTMLElement>document.querySelector(`.book-table-th`);
-    console.log("eleemnt",element.offsetWidth, element);
+    // console.log("eleemnt",element.offsetWidth, element);
     let caculatedWidth = Math.round((element.offsetWidth - 50 - this.scrollBarWidth)/10);
-    console.log("caculatedWidth",caculatedWidth)
+    // console.log("caculatedWidth",caculatedWidth)
     this.appointmentStyle['width'] = caculatedWidth;
     // console.log('appointmentStyle width', this.appointmentStyle.width)
     this.calendar = this.tableDataService.caculateCalendar(calendar,this.appointmentStyle.width, this.resizeService.filterAndOrderAppointment);
@@ -455,14 +461,22 @@ export class DashboardTimetableComponent  implements OnInit,AfterViewInit {
     
   }
 
+  tableHeightUpdateOnResize() {
+    let windowHeight = window.innerWidth;
+    this.tableHeight = windowHeight - 160;
+    console.log('resize windowHeight', windowHeight, this.tableHeight);
+  }
+
   initingTable() {
     this.currentTime$.pipe(
       take(1),
       ).subscribe(() => {
         this.getScrollBarWidth();
         this.widthUpdateOnResize();
-        let scrollToElement = document.getElementsByClassName('scroll-to')[0];
-        if (scrollToElement) scrollToElement.scrollIntoView();
+        this.tableHeightUpdateOnResize();
+        // let scrollToElement = document.getElementsByClassName('scroll-to')[0];
+        // if (scrollToElement) scrollToElement.scrollIntoView();
+        document.querySelector('.group-data').scrollTop = this.openTime * 4 * 20
         this.isLoading = false;
     });
   }

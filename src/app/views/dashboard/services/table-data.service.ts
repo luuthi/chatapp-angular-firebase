@@ -95,7 +95,7 @@ export class TableDataService {
       .map(appointment => {
         // console.log('item appointment',appointment)
         let employeeElement:HTMLElement = document.querySelector(`td[name=${appointment.name}]`);
-        console.log('target',employeeElement, employeeElement.getBoundingClientRect().left,employeeElement.offsetLeft);
+        // console.log('target',employeeElement, employeeElement.getBoundingClientRect().left,employeeElement.offsetLeft);
         // console.log("target",this.getAbsPosition(employeeElement))
         return {
           ...appointment,

@@ -46,12 +46,12 @@ export class DndService {
       }
 
       updateNameAndLeft(employeeElement,appointment) {
-        console.log("before",appointment);
+        // console.log("before",appointment);
         let dropName = employeeElement.getAttribute('name');
         let left = employeeElement.getBoundingClientRect().left + window.scrollX;
         appointment.left = left;
         appointment.name = dropName;
-        console.log("after",appointment);
+        // console.log("after",appointment);
         return appointment;
       }
       

@@ -18,9 +18,13 @@ import { ScrollToDirective } from './directives/scroll-to.directive';
 import { DashboardStateModule } from './dashboard-state/dashboard-state.module';
 import { AddAppointmentDialogsComponent } from './smart/add-appointment-dialogs/add-appointment-dialogs.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { AddAppointmentComponent } from './dumb/add-appointment/add-appointment.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     DashboardRoutingModule,
     CdkTableModule,
     ResizableModule,
@@ -49,6 +53,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     DashboarToolbarDatePickerComponent,
     ScrollToDirective,
     AddAppointmentDialogsComponent,
+    AddAppointmentComponent
   ],
   entryComponents:[
     AddAppointmentDialogsComponent,

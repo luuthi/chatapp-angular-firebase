@@ -71,13 +71,13 @@ export class AppComponent {
     ).subscribe(() => {
       
       this.selectElement();
-      console.log('all element?',
-      this.confirm,
-      this.pending,
-      this.statistic,
-      this.notification,
-      this.chatBtn,
-      this.chatSection);
+      // console.log('all element?',
+      // this.confirm,
+      // this.pending,
+      // this.statistic,
+      // this.notification,
+      // this.chatBtn,
+      // this.chatSection);
     })
 
 

@@ -2,81 +2,25 @@
 <mat-dialog-content>
   <mat-tab-group>
     <mat-tab label="Lịch hẹn">
-      <mat-list class="add-book-wrapper">
-        <mat-list-item class="add-book-btn">
-          <div class="item-title">Trạng thái</div>
-          <div class="item-status-group">
-            <button class="btn-pending active">Pending</button>
-            <button class="btn-confirmed">Confirmed</button>
-            <button class="btn-late">
-              <i class="material-icons">
-                info
-              </i>
-              Đến muộn
-            </button>
-            <button class="btn-paid">
-              <i class="material-icons">
-                check_box
-              </i>
-              Paid
-            </button>
-          </div>
-        </mat-list-item>
-        <mat-list-item>
-          <div class="item-title">
-            Nhân viên
-          </div>
-          <select name="employee-select" id="">
-            <option value="">Lựa chọn nhân viên...</option>
-            <option *ngFor="let e of employees" value="e">{{e}}</option>
-          </select>
-        </mat-list-item>
-        <mat-list-item>
-          <div class="item-title">
-            Dịch vụ
-          </div>
-          <select name="service-select" id="">
-            <option value="">Lựa chọn dịch vụ...</option>
-            <option *ngFor="let e of employees" value="e">{{e}}</option>
-          </select>
-          <div class="service-box">
-            <span class="unit-price">$</span>
-            <input class="service-price" type="number">
-          </div>
-          <div class="service-box">
-            <span class="unit-time">mins</span>
-            <input class="service-time" name="service-time" type="number">
-          </div>
-        </mat-list-item>
-        <mat-list-item>
-          <div class="item-title">
-            Ngày/Giờ
-          </div>
-          <input type="date" name="date-select">
-          <select name="time-select" class="time-select" id="">
-            <option value="">Time...</option>
-            <option *ngFor="let e of employees" value="e">{{e}}</option>
-          </select>
-        </mat-list-item>
-        <!-- <mat-list-item>
-          <div class="item-title">Nâng cấp</div>
-          <button mat-button class="btn-upgrade">
-            <i class="material-icons">
-              lock
-            </i> Nâng cấp</button>
-        </mat-list-item> -->
-        <mat-list-item>
-          <div class="item-title">Ghi chú</div>
-          <textarea name="note-wrapper" cols="50" rows="3" placeholder="Ghi chú"></textarea>
-        </mat-list-item>
-        <mat-list-item class="item-next">
-          <button class="btn-next">Tiếp theo</button>
-        </mat-list-item>
-      </mat-list>
+      <app-add-appointment></app-add-appointment>
     </mat-tab>
     <mat-tab label="Khách hàng">
-      <h1>Some more tab content</h1>
-      <p>...</p>
+      <mat-list class="customer-wrapper">
+        <mat-list-item class="customer-search">
+          <div class="item-title">Khách hàng</div>
+          <div class="item-input-search">
+            <input type="text" name="customer-search" class="input-search">
+          </div>
+        </mat-list-item>
+        <mat-list-item>
+          <div class="item-title">Hoặc</div>
+          <div class="item-button">
+            <button class="add-customer"> <i class="material-icons">
+              person_add
+              </i> Thêm khách hàng mới</button>
+          </div>
+        </mat-list-item>
+      </mat-list>
     </mat-tab>
   </mat-tab-group>
 </mat-dialog-content>

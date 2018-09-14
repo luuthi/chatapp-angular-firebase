@@ -23,6 +23,10 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       // { enableTracing: true } // <-- debugging purposes only
+      {
+        scrollPositionRestoration: 'enabled',
+        anchorScrolling: 'enabled',
+      }
     )
   ],
   exports: [

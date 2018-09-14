@@ -1,22 +1,26 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { element } from '@angular/core/src/render3/instructions';
 // export interface DialogData {
 //   animal: string;
 //   name: string;
 // }
 @Component({
-  selector: 'app-add-appointment-dialogs',
-  templateUrl: './add-appointment-dialogs.component.html',
-  styleUrls: ['./add-appointment-dialogs.component.scss']
+    selector: 'app-add-appointment-dialogs',
+    templateUrl: './add-appointment-dialogs.component.html',
+    styleUrls: ['./add-appointment-dialogs.component.scss']
 })
 export class AddAppointmentDialogsComponent implements OnInit {
-  public employees =['Hiep','Hoang','Hien','Hoa'];
-  constructor(){ }
-  
-  ngOnInit() {
-  }
+    
+    constructor() { }
 
-  // onNoClick(): void {
-  //   this.dialogRef.close();
-  // }
+    ngOnInit() {
+
+    }
+
+
+    
+    // onNoClick(): void {
+    //   this.dialogRef.close();
+    // }
 }

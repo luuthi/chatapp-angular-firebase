@@ -1,0 +1,68 @@
+<mat-list class="add-book-wrapper" [formGroup]="appointmentForm">
+  <mat-list-item class="add-book-btn">
+    <div class="item-title">Trạng thái</div>
+    <div class="item-status-group">
+      <button class="btn-pending" [class.active]="status.pending.value" (click)="toggleButton('pending')">Pending</button>
+      <button class="btn-confirmed" [class.active]="status.confirmed.value" (click)="toggleButton('confirmed')">Confirmed</button>
+      <button class="btn-late" [class.active]="status.late.value" (click)="toggleButton('late')"><i class="material-icons">info</i>Đến
+        muộn</button>
+      <button class="btn-paid" [class.active]="status.paid.value" (click)="toggleButton('paid')"><i class="material-icons">check_box</i>Paid</button>
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div class="item-title">
+      Nhân viên
+    </div>
+    <select formControlName="employee" name="employee-select" id="">
+      <option value="">Lựa chọn nhân viên...</option>
+      <option *ngFor="let e of employees" value="e">{{e}}</option>
+    </select>
+  </mat-list-item>
+  <mat-list-item>
+    <div class="item-title">
+      Dịch vụ
+    </div>
+    <select formControlName="service" name="service-select" id="">
+      <option value="">Lựa chọn dịch vụ...</option>
+      <option value="">Chặn booking (Slot Blocker)</option>
+      <option value="">--------------------------------</option>
+      <option *ngFor="let e of services" value="e">{{e}}</option>
+    </select>
+    <div class="service-box">
+      <span class="unit-price">$</span>
+      <input class="service-price input-service" type="text" (keypress)="checkKeyPress($event)">
+    </div>
+    <div class="service-box">
+      <span class="unit-time">mins</span>
+      <input class="service-time input-service" name="service-time" type="text" (keypress)="checkKeyPress($event)">
+    </div>
+  </mat-list-item>
+  <mat-list-item>
+    <div class="item-title">
+      Ngày/Giờ
+    </div>
+    <input type="date" name="date-select">
+    <select name="time-select" class="time-select" id="">
+      <option value="">Time...</option>
+      <option *ngFor="let e of employees" value="e">{{e}}</option>
+    </select>
+  </mat-list-item>
+  <!-- <mat-list-item>
+    <div class="item-title">Nâng cấp</div>
+    <button mat-button class="btn-upgrade">
+      <i class="material-icons">
+        lock
+      </i> Nâng cấp</button>
+  </mat-list-item> -->
+  <mat-list-item>
+    <div class="item-title">Ghi chú</div>
+    <textarea name="note-wrapper" cols="50" rows="3" placeholder="Ghi chú"></textarea>
+  </mat-list-item>
+  <mat-list-item class="item-next">
+    <button [class.active]="appointmentForm.valid" mat-button class="btn-next">Tiếp theo</button>
+  </mat-list-item>
+
+  <!-- TODO: this is form data, uncomment it for debuging -->
+
+  <!-- {{appointmentForm.value | json}} -->
+</mat-list>

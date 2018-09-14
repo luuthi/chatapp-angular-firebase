@@ -1,9 +1,8 @@
 .wrapper {
-    // position: relative;
+    position: relative;
     z-index: 1;
     // height: 100vh;
     // overflow-y: scroll;
-    
 }
 
 :host {
@@ -12,7 +11,8 @@
 }
 
 .group-data {
-    max-height: calc(100vh - 160px);
+    // max-height: calc(100vh);
+    max-height: calc(100vh - 150px);
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
@@ -25,6 +25,7 @@
     position: fixed;
     top: 100px;
     width: 100%;
+    z-index: 2;
 }
 
 #timetable1 div {
@@ -225,7 +226,7 @@ tr td span {
     left: 0px !important;
     width: 100% !important;
     height  : 100% !important;
-    z-index: 5;
+    z-index: 1;
 }
 #redline{
     position: absolute;
