@@ -6,6 +6,7 @@ import { User } from "../../../core/model/user";
 import { Message } from "../../../core/model/message";
 import { Conversation } from "../../../core/model/conversation";
 import { UserConversation } from "../../../core/model/user_conversation";
+import { callbackify } from "util";
 
 @Injectable({
     providedIn: 'root'
@@ -25,6 +26,18 @@ export class ChatFireBaseService {
                 return actions.map( c => ({ key: c.payload.key, ...c.payload.val() }));
             })
         )
+    }
+
+    checkUserExist(_id: String, callback: Function){
+        return this.db.database.ref(`users/${_id}/userID`).once('value', snapshot=>{
+            if(!snapshot.exists()){
+                callback();
+            }
+        });   
+    }
+
+    addUser(user: User){
+        this.db.object(`users/${user.userID}`).set(user);
     }
 
     getListConversation(){

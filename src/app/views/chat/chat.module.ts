@@ -14,6 +14,7 @@ import {environment}from '../../../environments/environment';
 import { ChatFireBaseService } from './services/chat-firebase.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @NgModule( {
   imports:[
@@ -31,6 +32,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     ], 
   declarations:[ChatComponent, ChatDialogsComponent, ChatDialogsItemComponent, ChatMessagesComponent, ChatMessagesItemComponent], 
   exports:[ChatComponent],
-  providers: [ChatFireBaseService],
+  providers: [ChatFireBaseService, AngularFireAuth],
 })
 export class ChatModule {}
