@@ -7,6 +7,7 @@ import { auth } from 'firebase';
 import { User } from '../../../../core/model/user';
 import { UserRole } from '../../../../core/constant/enum';
 import { Conversation } from '../../../../core/model/conversation';
+import { Message } from '../../../../core/model/message';
 
 @Component({
   selector: 'app-chat-dialogs',
@@ -91,9 +92,11 @@ export class ChatDialogsComponent implements OnInit {
   }
 
   addNewConversation(user){
-    let conversationID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    let conversation = new Conversation(conversationID, []);
+    let newConversationID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    let newMessageID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); 
+    let currentTime = Math.round(new Date().getTime() / 1000);
+    let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, null, null, currentTime, false);
+    let conversation = new Conversation(newConversationID, [firstMessage]);
     this.chatFireBaseService.addConversation(conversation, user);
   }
-
 }
