@@ -9,11 +9,11 @@ import {ChatDialogsItemComponent }from './dumb/chat-dialogs-item/chat-dialogs-it
 import {ChatMessagesComponent }from './smart/chat-messages/chat-messages.component'; 
 import {ChatMessagesItemComponent }from './dumb/chat-messages-item/chat-messages-item.component'; 
 import {MatCardModule, MatListModule, MatInputModule, MatTooltipModule, MatButtonModule }from '@angular/material'; 
-import {ChatRoutingModule }from './chat-routing.module'; 
-import {AngularFireModule}from '@angular/fire'; 
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireStorageModule } from '@angular/fire/storage';
+import {ChatRoutingModule }from './chat-routing.module';
 import {environment}from '../../../environments/environment';
+import { ChatFireBaseService } from './services/chat-firebase.service';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 @NgModule( {
   imports:[
@@ -26,11 +26,11 @@ import {environment}from '../../../environments/environment';
     MatTooltipModule, 
     MatButtonModule, 
     ChatRoutingModule,
-    AngularFireStorageModule,
-    AngularFireStorageModule,
+    AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebase, 'demo-chat')
     ], 
   declarations:[ChatComponent, ChatDialogsComponent, ChatDialogsItemComponent, ChatMessagesComponent, ChatMessagesItemComponent], 
-  exports:[ChatComponent]
+  exports:[ChatComponent],
+  providers: [ChatFireBaseService],
 })
 export class ChatModule {}

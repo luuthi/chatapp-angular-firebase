@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { ChatFireBaseService } from '../../services/chat-firebase.service';
+import { Observable } from 'rxjs';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-chat-dialogs',
@@ -16,9 +19,14 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 export class ChatDialogsComponent implements OnInit {
   public state = 'inactive';
   isViewMes: boolean = false;
-  constructor() { }
+  items: Observable<any[]>;
+
+  constructor(
+    public chatFireBaseService: ChatFireBaseService
+  ) { }
 
   ngOnInit() {
+    this.items = this.chatFireBaseService.getUser().pipe();
   }
 
   viewMessagesOrDialogs(){
