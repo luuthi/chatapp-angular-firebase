@@ -26,7 +26,7 @@ export class ChatDialogsComponent implements OnInit {
 
   users: any;
   conversation: Observable<any[]>;
-  cur_user : any;
+  curUser : any;
 
   constructor(
     public chatFireBaseService: ChatFireBaseService,
@@ -74,10 +74,10 @@ export class ChatDialogsComponent implements OnInit {
 
   login(){
       this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((data)=>{
-        this.cur_user = this.afAuth.auth.currentUser;
-        console.log(this.cur_user);
-        this.chatFireBaseService.checkUserExist(this.cur_user.uid, ()=>{
-            this.addNewUser(this.cur_user);
+        this.curUser = this.afAuth.auth.currentUser;
+        console.log(this.curUser);
+        this.chatFireBaseService.checkUserExist(this.curUser.uid, ()=>{
+            this.addNewUser(this.curUser);
         });
       });
   }
