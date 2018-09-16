@@ -101,6 +101,24 @@
             color: #000000;
         }
     }
+    .btn-logout{
+        height: 30px;
+        background-color: transparent;
+        font-size: 12px;
+        border-radius: 3px;
+        color: #ffffff;
+        line-height: 30px;
+        float: right;
+        margin-top: 5px;
+        cursor: pointer;
+        i{
+            font-size: 14px;
+        }
+        &:hover{
+            background-color: #ffffff;
+            color: #000000;
+        }
+    }
 }
 .mes--toolbar-header{
     // width: 320px;

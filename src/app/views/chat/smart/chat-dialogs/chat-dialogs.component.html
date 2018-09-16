@@ -1,6 +1,5 @@
 <div class="dialogs-inner" [@flyOutFade]="!isViewMes">
     <div *ngIf="afAuth.user | async as user; else showLogin">
-            <button (click)="logout()">Logout</button>
         <div class="dialogs--toolbar-header">
             <button class="btn-compose">
                 <i class="fa fa-envelope" aria-hidden="true"></i> Soạn
@@ -16,10 +15,13 @@
                 </ul>
         </div>
     </div>
-    <ng-template #showLogin>
-        <p>Please login.</p>
-        <button (click)="login()">Login with Google</button>
-    </ng-template>
-   
+    <div>
+        <ng-template #showLogin>
+            <p>Please login.</p>
+            <button (click)="login()">Login with Google</button>
+        </ng-template>
+    </div>
+    
 </div>
-<app-chat-messages [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()"></app-chat-messages>
+<app-chat-messages *ngIf="afAuth.user | async as user"
+ [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()"></app-chat-messages>

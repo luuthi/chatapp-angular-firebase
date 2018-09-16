@@ -37,7 +37,15 @@ export class ChatFireBaseService {
     }
 
     addUser(user: User){
-        this.db.object(`users/${user.userID}`).set(user);
+        return this.db.object(`users/${user.userID}`).set(user);
+    }
+
+    addConversation(conversation: Conversation, user: User){
+        this.db.database.ref("conversation").push(conversation).then(data=>{
+            let userConversation = new UserConversation(conversation.conversationID, "", 
+            new Date().getTime() / 1000, 0);
+            this.db.object(`users/${user.userID}/conversation`).update(userConversation);
+        })
     }
 
     getListConversation(){

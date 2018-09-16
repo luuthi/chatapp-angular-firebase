@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { ChatFireBaseService } from '../../services/chat-firebase.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {AngularFireAuth} from "@angular/fire/auth"
 import { auth } from 'firebase';
 import { User } from '../../../../core/model/user';
 import { UserRole } from '../../../../core/constant/enum';
+import { Conversation } from '../../../../core/model/conversation';
 
 @Component({
   selector: 'app-chat-dialogs',
@@ -64,18 +64,24 @@ export class ChatDialogsComponent implements OnInit {
   login(){
       this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((data)=>{
         this.cur_user = this.afAuth.auth.currentUser;
-        console.log(this.cur_user);
         this.chatFireBaseService.checkUserExist(this.cur_user.uid, ()=>{
-            let user = new User(this.cur_user.uid, this.cur_user.email, this.cur_user.displayName,
-              this.cur_user.photoURL, this.cur_user.photoURL, this.cur_user.email, null, UserRole.customer);
-            this.chatFireBaseService.addUser(user);
+            this.addNewUser(this.cur_user);
         });
       });
-      
   }
 
-  logout() {
-      this.afAuth.auth.signOut();
+  addNewUser(user){
+    let newUser = new User(user.uid, user.email, user.displayName,
+      user.photoURL, user.photoURL, user.email, null, UserRole.customer);
+    this.chatFireBaseService.addUser(newUser).then(data=>{
+      this.addNewConversation(newUser);
+    });
+  }
+
+  addNewConversation(user){
+    let conversationID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    let conversation = new Conversation(conversationID, []);
+    this.chatFireBaseService.addConversation(conversation, user);
   }
 
 }
