@@ -33,8 +33,8 @@ export class ChatFireBaseService {
             null,
             'ducdk',
             'Vu Dinh Duc',
-            null,
-            null,
+            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
+            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
             'mail@mail.com',
             null,
             'customer'
@@ -43,8 +43,8 @@ export class ChatFireBaseService {
             null,
             'admin',
             'Admin',
-            null,
-            null,
+            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
+            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
             'mail@mail.com',
             null,
             'admin'

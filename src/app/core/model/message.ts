@@ -8,8 +8,8 @@ export class Message {
     public messageTime: Number;
     public isSeen: Boolean;
 
-    constructor(private _messageID: String, private _messContent: String, private _mediaUrl: String, private _mediaThump: String,
-                private _senderID: String, private _picProfile: String, private _messTime :Number, private _isSeen: Boolean){
+    constructor( _messageID: String,  _messContent: String,  _mediaUrl: String,  _mediaThump: String,
+                 _senderID: String,  _picProfile: String,  _messTime :Number,  _isSeen: Boolean){
                     this.messageID = _messageID;
                     this.messageContent = _messContent;
                     this.mediaUrl = _mediaUrl;
