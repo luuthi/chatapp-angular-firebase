@@ -28,7 +28,7 @@ export class ChatDialogsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.createDataDemo();
+    // this.createDataDemo();
     this.getUserFireBaseDatabase();
     this.getConversationFireBaseDatabase();
   }
@@ -38,7 +38,8 @@ export class ChatDialogsComponent implements OnInit {
   }
 
   createDataDemo(){
-    this.chatFireBaseService.createDataDemo();
+    this.chatFireBaseService.createConversationDemo();
+    this.chatFireBaseService.createuserDemo();
   }
 
   getConversationFireBaseDatabase(){
