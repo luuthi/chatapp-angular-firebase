@@ -37,6 +37,7 @@ export class ChatDialogsComponent implements OnInit {
     // this.createDataDemo();
     this.getUserFireBaseDatabase();
     this.getConversationFireBaseDatabase();
+    // this.convertArrayUser();
   }
 
   getUserFireBaseDatabase(){
@@ -45,16 +46,26 @@ export class ChatDialogsComponent implements OnInit {
 
   createDataDemo(){
     this.chatFireBaseService.createConversationDemo();
-    this.chatFireBaseService.createuserDemo();
+    // this.chatFireBaseService.createuserDemo();
   }
 
   getConversationFireBaseDatabase(){
     this.conversation = this.chatFireBaseService.getListConversation();
-    console.log(this.conversation);
+    // console.log(this.conversation);
   }
 
-  convertArrayUser(){
-
+  arr = Array<any>();
+  convertArrayConversationUser():Array<string>{
+    this.users.forEach(element => {
+      element.forEach(res => {
+        // if (this.cur_user)
+        if (this.arr.indexOf(res.fullName) === -1) {
+          this.arr.push(res.fullName);
+        }
+      })
+    });
+    console.log(JSON.stringify(this.arr));
+    return this.arr;
   }
 
   viewMessagesOrDialogs(){
@@ -64,6 +75,7 @@ export class ChatDialogsComponent implements OnInit {
   login(){
       this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((data)=>{
         this.cur_user = this.afAuth.auth.currentUser;
+        console.log(this.cur_user);
         this.chatFireBaseService.checkUserExist(this.cur_user.uid, ()=>{
             this.addNewUser(this.cur_user);
         });

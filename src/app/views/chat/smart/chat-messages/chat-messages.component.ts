@@ -29,9 +29,13 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 export class ChatMessagesComponent implements OnInit {
   @Input() flyInFade: boolean = false;
   @Output() actionBack: EventEmitter<any> = new EventEmitter();
+
+  @Input() listConversation: any;
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.listConversation);
   }
 
 }
