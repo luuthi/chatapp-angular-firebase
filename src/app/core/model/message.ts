@@ -4,7 +4,7 @@ export class Message {
     public mediaUrl? : String;
     public mediaThumpnail?: String;
     public senderID : String;
-    public picProfile:String;
+    public picProfile?:String;
     public messageTime: Number;
     public isSeen: Boolean;
 
