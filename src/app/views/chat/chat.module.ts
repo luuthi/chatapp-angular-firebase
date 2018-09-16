@@ -10,7 +10,7 @@ import {ChatMessagesComponent }from './smart/chat-messages/chat-messages.compone
 import {ChatMessagesItemComponent }from './dumb/chat-messages-item/chat-messages-item.component'; 
 import {MatCardModule, MatListModule, MatInputModule, MatTooltipModule, MatButtonModule }from '@angular/material'; 
 import {ChatRoutingModule }from './chat-routing.module'; 
-import {AngularFireModule}from 'angularfire2'; 
+import {AngularFireModule}from '@angular/fire'; 
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import {environment}from '../../../environments/environment';
