@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from "@angular/core";
 import { Observable } from "rxjs";
 import { AngularFireDatabase } from "@angular/fire/database";
 import { map } from "rxjs/operators";
+import { User } from "../../../core/model/user";
 
 @Injectable({
     providedIn: 'root'
@@ -28,10 +29,27 @@ export class ChatFireBaseService {
     }
 
     createDataDemo(){
-        let user = {
-            email: "mail@mail.com",
-            username: "ducdk",
-        }
-        return this.db.database.ref("users").push(user);
+        let u = new User(
+            null,
+            'ducdk',
+            'Vu Dinh Duc',
+            null,
+            null,
+            'mail@mail.com',
+            null,
+            'customer'
+        )
+        let a = new User(
+            null,
+            'admin',
+            'Admin',
+            null,
+            null,
+            'mail@mail.com',
+            null,
+            'admin'
+        )
+        this.db.database.ref("users").push(u);
+        this.db.database.ref("users").push(a);
     }
 }

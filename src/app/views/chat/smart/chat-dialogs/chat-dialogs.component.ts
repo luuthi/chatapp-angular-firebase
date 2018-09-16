@@ -28,7 +28,7 @@ export class ChatDialogsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.createDataDemo();
+    this.createDataDemo();
     this.getUserFireBaseDatabase();
     this.getConversationFireBaseDatabase();
   }
