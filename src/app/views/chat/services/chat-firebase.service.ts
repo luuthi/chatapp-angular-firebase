@@ -42,8 +42,8 @@ export class ChatFireBaseService {
 
     addConversation(conversation: Conversation, user: User){
         this.db.database.ref("conversation").push(conversation).then(data=>{
-            let userConversation = new UserConversation(conversation.conversationID, "", 
-            new Date().getTime() / 1000, 0);
+            let currentTime = Math.round(new Date().getTime() / 1000);
+            let userConversation = new UserConversation(conversation.conversationID, "", currentTime, 0);
             this.db.object(`users/${user.userID}/conversation`).update(userConversation);
         })
     }
