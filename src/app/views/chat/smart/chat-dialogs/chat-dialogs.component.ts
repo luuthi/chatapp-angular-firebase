@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { ChatFireBaseService } from '../../services/chat-firebase.service';
 import { Observable } from 'rxjs';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-dialogs',
@@ -19,14 +19,35 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class ChatDialogsComponent implements OnInit {
   public state = 'inactive';
   isViewMes: boolean = false;
-  items: Observable<any[]>;
+
+  users: any;
+  conversation: Observable<any[]>;
 
   constructor(
     public chatFireBaseService: ChatFireBaseService
   ) { }
 
   ngOnInit() {
-    this.items = this.chatFireBaseService.getUser().pipe();
+    // this.createDataDemo();
+    this.getUserFireBaseDatabase();
+    this.getConversationFireBaseDatabase();
+  }
+
+  getUserFireBaseDatabase(){
+    this.users = this.chatFireBaseService.getUser();
+  }
+
+  createDataDemo(){
+    this.chatFireBaseService.createDataDemo();
+  }
+
+  getConversationFireBaseDatabase(){
+    this.conversation = this.chatFireBaseService.getListConversation();
+    console.log(this.conversation);
+  }
+
+  convertArrayUser(){
+
   }
 
   viewMessagesOrDialogs(){

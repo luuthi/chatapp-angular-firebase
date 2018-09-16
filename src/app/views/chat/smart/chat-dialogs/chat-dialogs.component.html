@@ -6,10 +6,10 @@
         <input class="search-mes" matInput placeholder="Tìm kiếm tin nhắn...">
     </div>
     <div class="list-dialogs container container-dialogs">
-        <app-chat-dialogs-item *ngFor="let item of ['view']" (click)="viewMessagesOrDialogs()"></app-chat-dialogs-item>
+        <!-- <app-chat-dialogs-item *ngFor="let item of ['view']" (click)="viewMessagesOrDialogs()"></app-chat-dialogs-item> -->
         <ul>
-            <li class="text" *ngFor="let item of items | async">
-              {{item.email}}
+            <li class="text" *ngFor="let item of users | async">
+              {{item | json}}
             </li>
           </ul>
     </div>
