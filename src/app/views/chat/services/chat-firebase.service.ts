@@ -6,7 +6,7 @@ import { User } from "../../../core/model/user";
 import { Message } from "../../../core/model/message";
 import { Conversation } from "../../../core/model/conversation";
 import { UserConversation } from "../../../core/model/user_conversation";
-import { callbackify } from "util";
+import {UserRole} from '../../../core/constant/enum';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +26,11 @@ export class ChatFireBaseService {
                 return actions.map( c => ({ key: c.payload.key, ...c.payload.val() }));
             })
         )
+    }
+
+    getAdminAcc(){
+        return this.db.database.ref('users').orderByChild('type')
+        .startAt(UserRole.admin).endAt(UserRole.admin)
     }
 
     checkUserExist(_id: String, callback: Function){
@@ -53,21 +58,9 @@ export class ChatFireBaseService {
     }
 
     createuserDemo(){
-        let u_c = new UserConversation('1', 'Test Message 3', 1537084640, 2);
-        let u = new User(
-            null,
-            'ducdk',
-            'Vu Dinh Duc',
-            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
-            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
-            'mail@mail.com',
-            [
-                u_c 
-            ],
-            'customer'
-        )
-        let a = new User(
-            null,
+        let u_c = new UserConversation('8eig2pdkr82doakhnlofl6', 'Welcome thi lưu, willing to help you', 1537084640, 2);
+        let user = new User(
+            'HNErJhopeqbOTBfRE8fDocLK1FCC',
             'admin',
             'Admin',
             '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
@@ -77,9 +70,8 @@ export class ChatFireBaseService {
                 u_c
             ],
             'admin'
-        )
-        this.db.database.ref("users").push(u);
-        this.db.database.ref("users").push(a);
+        );
+        this.db.object(`users/${user.userID}`).set(user);
     }
     
     createConversationDemo(){

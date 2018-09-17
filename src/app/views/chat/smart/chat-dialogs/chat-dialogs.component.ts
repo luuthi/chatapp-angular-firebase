@@ -8,6 +8,7 @@ import { User } from '../../../../core/model/user';
 import { UserRole } from '../../../../core/constant/enum';
 import { Conversation } from '../../../../core/model/conversation';
 import { Message } from '../../../../core/model/message';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Component({
   selector: 'app-chat-dialogs',
@@ -32,7 +33,9 @@ export class ChatDialogsComponent implements OnInit {
   constructor(
     public chatFireBaseService: ChatFireBaseService,
     public afAuth: AngularFireAuth
-  ) { }
+  ) { 
+    
+  }
 
   ngOnInit() {
     // this.createDataDemo();
@@ -46,8 +49,8 @@ export class ChatDialogsComponent implements OnInit {
   }
 
   createDataDemo(){
-    this.chatFireBaseService.createConversationDemo();
-    // this.chatFireBaseService.createuserDemo();
+    // this.chatFireBaseService.createConversationDemo();
+    this.chatFireBaseService.createuserDemo();
   }
 
   getConversationFireBaseDatabase(){
@@ -77,27 +80,39 @@ export class ChatDialogsComponent implements OnInit {
   login(){
       this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((data)=>{
         this.curUser = this.afAuth.auth.currentUser;
-        console.log(this.curUser);
+        let user = new User(this.curUser.uid, this.curUser.email, this.curUser.displayName,
+          this.curUser.photoURL, this.curUser.photoURL, this.curUser.email, null, UserRole.customer);
         this.chatFireBaseService.checkUserExist(this.curUser.uid, ()=>{
-            this.addNewUser(this.curUser);
+            this.addNewUser(user);
         });
+        localStorage.setItem('userLogin', JSON.stringify(user));
       });
   }
 
   addNewUser(user){
-    let newUser = new User(user.uid, user.email, user.displayName,
-      user.photoURL, user.photoURL, user.email, null, UserRole.customer);
-    this.chatFireBaseService.addUser(newUser).then(data=>{
-      this.addNewConversation(newUser);
+    this.chatFireBaseService.addUser(user).then(data=>{
+      this.addNewConversation(user);
     });
   }
 
   addNewConversation(user){
-    let newConversationID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    let newMessageID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); 
+    var self = this;
+    let newConversationID = this.genID();
+    let newMessageID = this.genID();
     let currentTime = Math.round(new Date().getTime() / 1000);
-    let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, null, null, currentTime, false);
-    let conversation = new Conversation(newConversationID, [firstMessage]);
-    this.chatFireBaseService.addConversation(conversation, user);
+    this.chatFireBaseService.getAdminAcc().on('value', function(snapshot){
+      let data = snapshot.val();
+      let arrAdmin = [];
+      for(let key in data){
+          arrAdmin.push(data[key]);
+      }
+      let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, arrAdmin[0].userID, null, currentTime, false);
+      let conversation = new Conversation(newConversationID, [firstMessage]);
+      self.chatFireBaseService.addConversation(conversation, user)
+    });
+    ;
+  }
+  genID(){
+    return  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); 
   }
 }
