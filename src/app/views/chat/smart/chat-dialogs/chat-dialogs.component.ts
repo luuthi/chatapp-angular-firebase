@@ -58,8 +58,9 @@ export class ChatDialogsComponent implements OnInit {
   convertArrayConversationUser():Array<string>{
     this.users.forEach(element => {
       element.forEach(res => {
-        // if (this.cur_user)
-        if (this.arr.indexOf(res.fullName) === -1) {
+        console.log(this.cur_user);
+        // && this.cur_user.uid != res.userID
+        if (this.arr.indexOf(res.fullName) === -1 ) {
           this.arr.push(res.fullName);
         }
       })
