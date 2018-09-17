@@ -7,6 +7,7 @@ import { auth } from 'firebase';
 import { User } from '../../../../core/model/user';
 import { UserRole } from '../../../../core/constant/enum';
 import { Conversation } from '../../../../core/model/conversation';
+import { Message } from '../../../../core/model/message';
 
 @Component({
   selector: 'app-chat-dialogs',
@@ -26,7 +27,7 @@ export class ChatDialogsComponent implements OnInit {
 
   users: any;
   conversation: Observable<any[]>;
-  cur_user : any;
+  curUser : any;
 
   constructor(
     public chatFireBaseService: ChatFireBaseService,
@@ -75,10 +76,10 @@ export class ChatDialogsComponent implements OnInit {
 
   login(){
       this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((data)=>{
-        this.cur_user = this.afAuth.auth.currentUser;
-        console.log(this.cur_user);
-        this.chatFireBaseService.checkUserExist(this.cur_user.uid, ()=>{
-            this.addNewUser(this.cur_user);
+        this.curUser = this.afAuth.auth.currentUser;
+        console.log(this.curUser);
+        this.chatFireBaseService.checkUserExist(this.curUser.uid, ()=>{
+            this.addNewUser(this.curUser);
         });
       });
   }
@@ -92,9 +93,11 @@ export class ChatDialogsComponent implements OnInit {
   }
 
   addNewConversation(user){
-    let conversationID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    let conversation = new Conversation(conversationID, []);
+    let newConversationID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    let newMessageID = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); 
+    let currentTime = Math.round(new Date().getTime() / 1000);
+    let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, null, null, currentTime, false);
+    let conversation = new Conversation(newConversationID, [firstMessage]);
     this.chatFireBaseService.addConversation(conversation, user);
   }
-
 }
