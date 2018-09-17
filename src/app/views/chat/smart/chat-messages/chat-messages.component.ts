@@ -1,6 +1,10 @@
 import { EventEmitter, Input } from '@angular/core';
 import { Component, OnInit, Output } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { User } from '../../../../core/model/user';
+import { Message } from '../../../../core/model/message';
+import { ChatFireBaseService } from '../../services/chat-firebase.service';
+import { UserRole } from '../../../../core/constant/enum';
 
 @Component({
   selector: 'app-chat-messages',
@@ -30,12 +34,17 @@ export class ChatMessagesComponent implements OnInit {
   @Input() flyInFade: boolean = false;
   @Output() actionBack: EventEmitter<any> = new EventEmitter();
 
-  @Input() listConversation: any;
+  listMessage: Array<Message>;
+  @Input() user : User;
+  isCanBack : boolean = false;
 
-  constructor() { }
+  constructor(private chatFirebaseService: ChatFireBaseService) { }
 
   ngOnInit() {
-    console.log(this.listConversation);
+    console.log(this.user);
+    if(this.user.type === UserRole.admin || this.user.type === UserRole.supporter){
+      this.isCanBack = true;
+    }
   }
 
 }

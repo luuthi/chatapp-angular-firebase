@@ -1,11 +1,11 @@
 <div class="messages-inner" [@flyInFade]="flyInFade">
   <div class="mes--toolbar-header">
-    <i class="fa fa-angle-left" aria-hidden="true" (click)="actionBack.emit()"></i>
+    <i class="fa fa-angle-left" aria-hidden="true" (click)="actionBack.emit()" *ngIf="isCanBack"></i>
     <div class="mes--header">
       <div class="header--ava">
         <div class="ava--box">L</div>
       </div>
-      <div class="header--name">Laura Murphy</div>
+      <div class="header--name">{{user.fullName}}</div>
     </div>
   </div>
   <div class="action-hover-inner">
