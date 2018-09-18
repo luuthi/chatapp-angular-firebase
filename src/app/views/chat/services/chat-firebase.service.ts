@@ -33,12 +33,8 @@ export class ChatFireBaseService {
         .startAt(UserRole.admin).endAt(UserRole.admin)
     }
 
-    checkUserExist(_id: String, callback: Function){
-        return this.db.database.ref(`users/${_id}/userID`).once('value', snapshot=>{
-            if(!snapshot.exists()){
-                callback();
-            }
-        });   
+    checkUserExist(_id: String,){
+        return this.db.database.ref(`users/${_id}`);   
     }
 
     addUser(user: User){
@@ -60,7 +56,7 @@ export class ChatFireBaseService {
     createuserDemo(){
         let u_c = new UserConversation('8eig2pdkr82doakhnlofl6', 'Welcome thi lưu, willing to help you', 1537084640, 2);
         let user = new User(
-            'HNErJhopeqbOTBfRE8fDocLK1FCC',
+            'HNErJhopeqbOTBfRE8fDocLK1FC5',
             'admin',
             'Admin',
             '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
