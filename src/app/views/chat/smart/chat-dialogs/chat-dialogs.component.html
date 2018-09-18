@@ -19,4 +19,4 @@
     
 </div>
 <app-chat-messages *ngIf="afAuth.user | async as user"
- [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()" [user]="curUser"></app-chat-messages>
+ [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()" [curUser]="curUser" [userChat]="userActive"></app-chat-messages>

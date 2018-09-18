@@ -5,6 +5,7 @@ import { User } from '../../../../core/model/user';
 import { Message } from '../../../../core/model/message';
 import { ChatFireBaseService } from '../../services/chat-firebase.service';
 import { UserRole } from '../../../../core/constant/enum';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-messages',
@@ -34,17 +35,66 @@ export class ChatMessagesComponent implements OnInit {
   @Input() flyInFade: boolean = false;
   @Output() actionBack: EventEmitter<any> = new EventEmitter();
 
-  listMessage: Array<Message>;
-  @Input() user : User;
+  listMessage: Array<any> = [];
+  @Input() curUser : User;
+  @Input() userChat : any;
   isCanBack : boolean = false;
+
+  formMessage: FormGroup;
 
   constructor(private chatFirebaseService: ChatFireBaseService) { }
 
   ngOnInit() {
-    console.log(this.user);
-    if(this.user.type === UserRole.admin || this.user.type === UserRole.supporter){
+    console.log(this.userChat);
+    if(this.curUser.type === UserRole.admin || this.curUser.type === UserRole.supporter){
       this.isCanBack = true;
     }
+    this.getMessageConversation();
+    this.formMessage = new FormGroup({
+      message: new FormControl(''),
+    });
   }
 
+  checkIsCurrentUser(sendID: any):boolean{
+    // if (this.curUser.userID === sendId)
+    return this.curUser.userID === sendID;
+  }
+
+  getMessageConversation(){
+    this.chatFirebaseService.getListMessageConversation(this.userChat.conversationID)
+    .forEach(element => {
+      element.forEach(item => {
+        console.log(!this.checkMessageExist(item));
+        if (item != this.userChat.conversationID && item != undefined){
+          
+          if (!this.checkMessageExist(item)) {
+            this.listMessage.push(item);
+          }
+          
+        }
+      });
+    });
+  }
+
+  checkMessageExist(item: any) {
+    var i;
+    for (i = 0; i < this.listMessage.length; i++) {
+        if (this.listMessage[i].messageID === item.messageID) {
+            console.log(this.listMessage[i]);
+            return true;
+        }
+    }
+
+    return false;
+  }
+
+  sendMessage(form: FormGroup){
+    let time = new Date();
+    let mes = new Message(this.genID(), form.value.message, null, null, this.curUser.userID, null, time.getTime(), false);
+    this.chatFirebaseService.addMessage(mes, this.userChat.conversationID);
+  }
+
+  genID() {
+    return  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); 
+  }
 }

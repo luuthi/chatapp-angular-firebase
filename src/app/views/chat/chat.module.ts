@@ -15,11 +15,13 @@ import { ChatFireBaseService } from './services/chat-firebase.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule( {
   imports:[
     CommonModule, 
     BrowserModule, 
+    ReactiveFormsModule,
     BrowserAnimationsModule, 
     MatCardModule, 
     MatListModule, 

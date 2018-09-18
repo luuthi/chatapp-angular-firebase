@@ -30,6 +30,8 @@ export class ChatDialogsComponent implements OnInit {
   conversation:Observable < any[] > ; 
   curUser: User; 
 
+  userActive: any;
+
   constructor(
     public chatFireBaseService:ChatFireBaseService, 
     public afAuth:AngularFireAuth
@@ -82,7 +84,8 @@ export class ChatDialogsComponent implements OnInit {
     return this.arr; 
   }
 
-  viewMessagesOrDialogs() {
+  viewMessagesOrDialogs(item) {
+    this.userActive = item;
     this.isViewMes =  ! this.isViewMes; 
   }
 
@@ -100,6 +103,7 @@ export class ChatDialogsComponent implements OnInit {
           if (userLogin.type === UserRole.admin || userLogin.type === UserRole.supporter ){
             self.isViewMes = false; 
           } else {
+            self.userActive = userLogin.conversation;
             self.isViewMes = true;
           }
         }

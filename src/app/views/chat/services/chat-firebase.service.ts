@@ -64,6 +64,10 @@ export class ChatFireBaseService {
         return this.db.list('conversation').valueChanges();
     }
 
+    getListMessageConversation(conversationID: String){
+        return this.db.list(`conversation/${conversationID}/message`).valueChanges();
+    }
+
     createuserDemo(){
         let u_c = new UserConversation('8eig2pdkr82doakhnlofl6', 'Welcome thi lưu, willing to help you', 1537084640, 2);
         let user = new User(

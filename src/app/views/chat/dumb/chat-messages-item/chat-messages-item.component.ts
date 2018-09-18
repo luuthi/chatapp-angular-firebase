@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Message } from '../../../../core/model/message';
 
 @Component({
   selector: 'app-chat-messages-item',
@@ -7,9 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ChatMessagesItemComponent implements OnInit {
   @Input() isCurrentUser: boolean = false;
+  @Input() message: Message;
   constructor() { }
 
   ngOnInit() {
+    console.log(this.message);
   }
 
 }
