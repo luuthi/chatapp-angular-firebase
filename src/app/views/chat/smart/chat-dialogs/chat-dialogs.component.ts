@@ -1,4 +1,4 @@
-import {Component, OnInit }from '@angular/core'; 
+import {Component, OnInit, Input, EventEmitter, Output}from '@angular/core'; 
 import {trigger, state, style, animate, transition }from '@angular/animations'; 
 import {ChatFireBaseService }from '../../services/chat-firebase.service'; 
 import {Observable }from 'rxjs'; 
@@ -25,6 +25,8 @@ import {async }from 'rxjs/internal/scheduler/async';
 export class ChatDialogsComponent implements OnInit {
   public state = 'inactive'; 
   isViewMes:boolean = false; 
+  isLogin : boolean;
+  @Output() doLogOut: EventEmitter<any> = new EventEmitter();
 
   users:any; 
   conversation:Observable < any[] > ; 
@@ -32,10 +34,11 @@ export class ChatDialogsComponent implements OnInit {
 
   constructor(
     public chatFireBaseService:ChatFireBaseService, 
-    public afAuth:AngularFireAuth
-  ) {
-    
-  }
+    public afAuth:AngularFireAuth) {
+      this.chatFireBaseService.listen().subscribe((m:any) => {
+        this.logout();
+    })
+    }
 
   ngOnInit() {
     // this.createDataDemo();
@@ -49,8 +52,15 @@ export class ChatDialogsComponent implements OnInit {
     let data = localStorage.getItem("userLogin");
     if (data != undefined || data != null){
       this.curUser = JSON.parse(data);
+      if (this.curUser.type === UserRole.customer){
+        this.isViewMes = true;
+      }else{
+        this.isViewMes = false;
+      }
+      this.isLogin = true;
     }else{
       this.curUser = null;
+      this.isLogin = false;
     }
   }
 
@@ -90,6 +100,7 @@ export class ChatDialogsComponent implements OnInit {
     let self = this;
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider()).then((data) =>  {
       let curUser = this.afAuth.auth.currentUser; 
+      self.isLogin = true;
       self.curUser = new User(curUser.uid, curUser.email, curUser.displayName, 
         curUser.photoURL, curUser.photoURL, curUser.email, null, UserRole.customer); 
         self.chatFireBaseService.checkUserExist(self.curUser.userID).on('value', function(snapshot){
@@ -106,6 +117,13 @@ export class ChatDialogsComponent implements OnInit {
       }); 
       localStorage.setItem('userLogin', JSON.stringify(self.curUser)); 
     }); 
+  }
+
+  logout() {
+      this.afAuth.auth.signOut();
+      localStorage.removeItem("userLogin");
+      this.isLogin = false;
+      this.isViewMes = false;
   }
 
   addNewUser(user) {
@@ -126,7 +144,6 @@ export class ChatDialogsComponent implements OnInit {
           arrAdmin.push(data[key]); 
       }
       let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, arrAdmin[0].userID, null, currentTime, false); 
-      let uc = {}
       let conversation = new Conversation(newConversationID, {[newMessageID] : firstMessage}); 
       self.chatFireBaseService.addConversation(conversation, user)
     }); ; 
