@@ -39,9 +39,9 @@ export class ChatDialogsComponent implements OnInit {
 
   ngOnInit() {
     // this.createDataDemo();
+    this.getUserLocal();
     this.getUserFireBaseDatabase(); 
     this.getConversationFireBaseDatabase();
-    this.getUserLocal();
     // this.convertArrayUser();
   }
 
@@ -94,7 +94,7 @@ export class ChatDialogsComponent implements OnInit {
         curUser.photoURL, curUser.photoURL, curUser.email, null, UserRole.customer); 
         self.chatFireBaseService.checkUserExist(self.curUser.userID).on('value', function(snapshot){
         if (!snapshot.exists()) {
-          self.chatFireBaseService.addUser(self.curUser);
+          self.addNewUser(self.curUser);
         } else {
           let userLogin = snapshot.val();
           if (userLogin.type === UserRole.admin || userLogin.type === UserRole.supporter ){
@@ -126,7 +126,8 @@ export class ChatDialogsComponent implements OnInit {
           arrAdmin.push(data[key]); 
       }
       let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, arrAdmin[0].userID, null, currentTime, false); 
-      let conversation = new Conversation(newConversationID, [firstMessage]); 
+      let uc = {}
+      let conversation = new Conversation(newConversationID, {[newMessageID] : firstMessage}); 
       self.chatFireBaseService.addConversation(conversation, user)
     }); ; 
   }
