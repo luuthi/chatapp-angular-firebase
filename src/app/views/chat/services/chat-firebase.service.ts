@@ -42,11 +42,22 @@ export class ChatFireBaseService {
     }
 
     addConversation(conversation: Conversation, user: User){
-        this.db.database.ref("conversation").push(conversation).then(data=>{
+        let conversationID = conversation.conversationID;
+        this.db.object(`conversation/${conversationID}`).set(conversation).then(data=>{
             let currentTime = Math.round(new Date().getTime() / 1000);
             let userConversation = new UserConversation(conversation.conversationID, "", currentTime, 0);
             this.db.object(`users/${user.userID}/conversation`).update(userConversation);
         })
+    }
+
+    addMessage(message: Message, conversationID: String){
+        this.db.database.ref(`conversation/${conversationID}/message`)
+        .child(message.messageID.toString()).set(message);
+    }
+
+    seenMessage(messageID: String, conversationID: String){
+        this.db.database.ref(`conversation/${conversationID}/message/${messageID}`)
+        .child("isSeen").set(true);
     }
 
     getListConversation(){
