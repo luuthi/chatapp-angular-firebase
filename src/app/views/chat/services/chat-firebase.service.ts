@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from "@angular/core";
+import { Injectable, EventEmitter, Output } from "@angular/core";
 import { Observable } from "rxjs";
 import { AngularFireDatabase } from "@angular/fire/database";
 import { map } from "rxjs/operators";
@@ -7,6 +7,7 @@ import { Message } from "../../../core/model/message";
 import { Conversation } from "../../../core/model/conversation";
 import { UserConversation } from "../../../core/model/user_conversation";
 import {UserRole} from '../../../core/constant/enum';
+import { Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +19,15 @@ export class ChatFireBaseService {
     constructor(
         public db: AngularFireDatabase
     ) {
+    }
+    private _listners = new Subject<any>();
+
+    listen(): Observable<any> {
+       return this._listners.asObservable();
+    }
+
+    logout(){
+        this._listners.next();
     }
 
     getUser(){
