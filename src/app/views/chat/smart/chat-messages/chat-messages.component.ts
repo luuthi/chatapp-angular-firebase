@@ -37,7 +37,7 @@ export class ChatMessagesComponent implements OnInit {
 
   listMessage: Array<any> = [];
   @Input() curUser : User;
-  @Input() userChat : any;
+  @Input() userChat : User;
   isCanBack : boolean = false;
 
   formMessage: FormGroup;
@@ -45,7 +45,6 @@ export class ChatMessagesComponent implements OnInit {
   constructor(private chatFirebaseService: ChatFireBaseService) { }
 
   ngOnInit() {
-    console.log(this.userChat);
     if(this.curUser.type === UserRole.admin || this.curUser.type === UserRole.supporter){
       this.isCanBack = true;
     }
@@ -61,11 +60,11 @@ export class ChatMessagesComponent implements OnInit {
   }
 
   getMessageConversation(){
-    this.chatFirebaseService.getListMessageConversation(this.userChat.conversationID)
+    this.chatFirebaseService.getListMessageConversation(this.curUser.conversation.conversationID)
     .forEach(element => {
       element.forEach(item => {
         console.log(!this.checkMessageExist(item));
-        if (item != this.userChat.conversationID && item != undefined){
+        if (item != this.curUser.conversation.conversationID && item != undefined){
           
           if (!this.checkMessageExist(item)) {
             this.listMessage.push(item);
@@ -91,7 +90,7 @@ export class ChatMessagesComponent implements OnInit {
   sendMessage(form: FormGroup){
     let time = new Date();
     let mes = new Message(this.genID(), form.value.message, null, null, this.curUser.userID, null, time.getTime(), false);
-    this.chatFirebaseService.addMessage(mes, this.userChat.conversationID);
+    this.chatFirebaseService.addMessage(mes, this.curUser.conversation.conversationID);
   }
 
   genID() {

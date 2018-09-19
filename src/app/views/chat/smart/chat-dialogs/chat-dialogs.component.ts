@@ -110,11 +110,11 @@ export class ChatDialogsComponent implements OnInit {
         if (!snapshot.exists()) {
           self.addNewUser(self.curUser);
         } else {
-          let userLogin = snapshot.val();
-          if (userLogin.type === UserRole.admin || userLogin.type === UserRole.supporter ){
+          self.curUser = snapshot.val();
+          if (self.curUser.type === UserRole.admin || self.curUser.type === UserRole.supporter ){
             self.isViewMes = false; 
           } else {
-            self.userActive = userLogin.conversation;
+            self.userActive = self.curUser.conversation;
             self.isViewMes = true;
           }
         }
