@@ -13,6 +13,7 @@ import {ChatRoutingModule }from './chat-routing.module';
 import {environment}from '../../../environments/environment';
 import { ChatFireBaseService } from './services/chat-firebase.service';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -30,6 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule, 
     ChatRoutingModule,
     AngularFireDatabaseModule,
+    AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase, 'demo-chat')
     ], 
   declarations:[ChatComponent, ChatDialogsComponent, ChatDialogsItemComponent, ChatMessagesComponent, ChatMessagesItemComponent], 

@@ -7,7 +7,7 @@
             <input class="search-mes" matInput placeholder="Tìm kiếm tin nhắn...">
         </div>
         <div class="list-dialogs container container-dialogs">
-            <app-chat-dialogs-item *ngFor="let item of convertArrayConversationUser()" [user]="item" (click)="viewMessagesOrDialogs()" ></app-chat-dialogs-item>
+            <app-chat-dialogs-item *ngFor="let item of conversation | async" [conversation]="item" (click)="viewMessagesOrDialogs(item)" ></app-chat-dialogs-item>
         </div>
     </div>
     <div *ngIf="!isLogin" >
@@ -15,5 +15,5 @@
         <button (click)="login()">Login with Google</button>
     </div>
 </div>
-<app-chat-messages *ngIf="afAuth.user | async as user"
+<app-chat-messages *ngIf="afAuth.user && isViewMes"
  [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()" [curUser]="curUser" [userChat]="userActive"></app-chat-messages>

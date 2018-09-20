@@ -28,7 +28,7 @@ export class ChatDialogsComponent implements OnInit {
   isLogin : boolean;
   @Output() doLogOut: EventEmitter<any> = new EventEmitter();
 
-  users:any; 
+  // users:any; 
   conversation:Observable < any[] > ; 
   curUser: User; 
 
@@ -45,8 +45,7 @@ export class ChatDialogsComponent implements OnInit {
   ngOnInit() {
     // this.createDataDemo();
     this.getUserLocal();
-    this.getUserFireBaseDatabase(); 
-    this.getConversationFireBaseDatabase();
+    
     // this.convertArrayUser();
   }
 
@@ -58,6 +57,7 @@ export class ChatDialogsComponent implements OnInit {
         this.isViewMes = true;
       }else{
         this.isViewMes = false;
+        this.getConversationByUser(this.curUser);
       }
       this.isLogin = true;
     }else{
@@ -66,37 +66,40 @@ export class ChatDialogsComponent implements OnInit {
     }
   }
 
-  getUserFireBaseDatabase() {
-    this.users = this.chatFireBaseService.getUser(); 
-  }
+  // getUserFireBaseDatabase() {
+  //   this.users = this.chatFireBaseService.getUser(); 
+  // }
 
   createDataDemo() {
     // this.chatFireBaseService.createConversationDemo();
-    this.chatFireBaseService.createuserDemo(); 
+    // this.chatFireBaseService.createuserDemo(); 
   }
 
-  getConversationFireBaseDatabase() {
-    this.conversation = this.chatFireBaseService.getListConversation(); 
+  getConversationByUser(user: User) {
+    this.conversation = this.chatFireBaseService.getListConversation(user); 
     // console.log(this.conversation);
   }
 
-  arr = Array < any > (); 
-  convertArrayConversationUser():Array < string >  {
-    this.users.forEach(element =>  {
-      element.forEach(res =>  {
-        // if (this.cur_user)
-        if (this.arr.indexOf(res.fullName) === -1) {
-          this.arr.push(res.fullName); 
-        }
-      })
-    }); 
-    console.log(JSON.stringify(this.arr)); 
-    return this.arr; 
-  }
+  // arr = Array < any > (); 
+  // convertArrayConversationUser():Array < string >  {
+  //   this.users.forEach(element =>  {
+  //     element.forEach(res =>  {
+  //       // if (this.cur_user)
+  //       if (this.arr.indexOf(res.fullName) === -1) {
+  //         this.arr.push(res.fullName); 
+  //       }
+  //     })
+  //   }); 
+  //   console.log(JSON.stringify(this.arr)); 
+  //   return this.arr; 
+  // }
 
   viewMessagesOrDialogs(item) {
-    this.userActive = item;
+    if (!this.isViewMes){
+      this.userActive = item;
+    }
     this.isViewMes =  ! this.isViewMes; 
+    
   }
 
   login() {
@@ -108,18 +111,19 @@ export class ChatDialogsComponent implements OnInit {
         curUser.photoURL, curUser.photoURL, curUser.email, null, UserRole.customer); 
         self.chatFireBaseService.checkUserExist(self.curUser.userID).on('value', function(snapshot){
         if (!snapshot.exists()) {
-          self.addNewUser(self.curUser);
+          self.addNewConversation(self.curUser);
         } else {
           self.curUser = snapshot.val();
           if (self.curUser.type === UserRole.admin || self.curUser.type === UserRole.supporter ){
             self.isViewMes = false; 
+            // self.getUserFireBaseDatabase(); 
+            self.getConversationByUser(self.curUser);
           } else {
-            self.userActive = self.curUser.conversation;
             self.isViewMes = true;
           }
+          localStorage.setItem("userLogin", JSON.stringify(self.curUser));
         }
       }); 
-      localStorage.setItem('userLogin', JSON.stringify(self.curUser)); 
     }); 
   }
 
@@ -131,9 +135,7 @@ export class ChatDialogsComponent implements OnInit {
   }
 
   addNewUser(user) {
-    this.chatFireBaseService.addUser(user).then(data =>  {
-      this.addNewConversation(user); 
-    }); 
+    this.chatFireBaseService.addUser(user);
   }
 
   addNewConversation(user) {
@@ -147,10 +149,12 @@ export class ChatDialogsComponent implements OnInit {
       for (let key in data) {
           arrAdmin.push(data[key]); 
       }
-      let firstMessage = new Message(newMessageID, "Welcome " + user.fullName + ", willing to help you", null, null, arrAdmin[0].userID, null, currentTime, false); 
+      let welcomeMess = "Welcome " + user.fullName + ", willing to help you";
+      let firstMessage = new Message(newMessageID, welcomeMess, null, null, arrAdmin[0].userID, 
+        null, currentTime, false); 
       let conversation = new Conversation(newConversationID, {[newMessageID] : firstMessage}); 
-      self.chatFireBaseService.addConversation(conversation, user)
-    }); ; 
+      self.chatFireBaseService.addConversation(conversation, user, welcomeMess, true)
+    }); 
   }
   genID() {
     return  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15); 

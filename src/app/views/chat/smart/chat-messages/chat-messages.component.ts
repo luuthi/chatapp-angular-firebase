@@ -37,21 +37,25 @@ export class ChatMessagesComponent implements OnInit {
 
   listMessage: Array<any> = [];
   @Input() curUser : User;
-  @Input() userChat : User;
+  @Input() userChat : any;
   isCanBack : boolean = false;
+  conversationID: String;
+  messageChat = "";
 
   formMessage: FormGroup;
 
   constructor(private chatFirebaseService: ChatFireBaseService) { }
 
   ngOnInit() {
-    if(this.curUser.type === UserRole.admin || this.curUser.type === UserRole.supporter){
-      this.isCanBack = true;
+    if(this.curUser !== null){
+      if(this.curUser.type === UserRole.admin || this.curUser.type === UserRole.supporter){
+        this.isCanBack = true;
+      }
+      this.getMessageConversation();
+      this.formMessage = new FormGroup({
+        message: new FormControl(''),
+      });
     }
-    this.getMessageConversation();
-    this.formMessage = new FormGroup({
-      message: new FormControl(''),
-    });
   }
 
   checkIsCurrentUser(sendID: any):boolean{
@@ -60,19 +64,27 @@ export class ChatMessagesComponent implements OnInit {
   }
 
   getMessageConversation(){
-    this.chatFirebaseService.getListMessageConversation(this.curUser.conversation.conversationID)
-    .forEach(element => {
-      element.forEach(item => {
-        console.log(!this.checkMessageExist(item));
-        if (item != this.curUser.conversation.conversationID && item != undefined){
-          
-          if (!this.checkMessageExist(item)) {
-            this.listMessage.push(item);
+    if(this.curUser.conversation != null){
+      this.conversationID = this.userChat["conversationID"];
+      this.chatFirebaseService.getListMessageConversation(this.conversationID.toString())
+      .forEach(element => {
+        element.forEach(item => {
+          console.log(!this.checkMessageExist(item));
+          if (item !== undefined && item !== null){
+            if (!this.checkMessageExist(item)) {
+              let date = new Date(item['messageTime'] * 1000).toLocaleDateString();
+              let time = new Date(item['messageTime'] * 1000).toLocaleTimeString();
+              item['date'] = date;
+              item['time'] = time;
+              this.listMessage.push(item);
+              this.listMessage.sort((a,b) => (a['messageTime'] > b['messageTime']) ? 1 : ((b['messageTime'] > a['messageTime']) ? -1 : 0))
+            }
+            
           }
-          
-        }
+        });
       });
-    });
+    }
+    
   }
 
   checkMessageExist(item: any) {
@@ -89,8 +101,9 @@ export class ChatMessagesComponent implements OnInit {
 
   sendMessage(form: FormGroup){
     let time = new Date();
-    let mes = new Message(this.genID(), form.value.message, null, null, this.curUser.userID, null, time.getTime(), false);
-    this.chatFirebaseService.addMessage(mes, this.curUser.conversation.conversationID);
+    let mes = new Message(this.genID(), form.value.message, null, null, this.curUser.userID, null, Math.round(time.getTime() / 1000), false);
+    this.chatFirebaseService.addMessage(mes, this.conversationID.toString());
+    this.messageChat = "";
   }
 
   genID() {

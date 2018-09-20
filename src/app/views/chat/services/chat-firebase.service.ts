@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter, Output } from "@angular/core";
 import { Observable } from "rxjs";
 import { AngularFireDatabase } from "@angular/fire/database";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { map } from "rxjs/operators";
 import { User } from "../../../core/model/user";
 import { Message } from "../../../core/model/message";
@@ -17,7 +18,8 @@ export class ChatFireBaseService {
     user: Observable<any[]>;
     
     constructor(
-        public db: AngularFireDatabase
+        public db: AngularFireDatabase,
+        public dbft: AngularFirestore
     ) {
     }
     private _listners = new Subject<any>();
@@ -43,7 +45,7 @@ export class ChatFireBaseService {
         .startAt(UserRole.admin).endAt(UserRole.admin)
     }
 
-    checkUserExist(_id: String,){
+    checkUserExist(_id: String){
         return this.db.database.ref(`users/${_id}`);   
     }
 
@@ -51,12 +53,20 @@ export class ChatFireBaseService {
         return this.db.object(`users/${user.userID}`).set(user);
     }
 
-    addConversation(conversation: Conversation, user: User){
+    addConversation(conversation: Conversation, user: User, welcomeMess: String, isNewUser: boolean){
         let conversationID = conversation.conversationID;
         this.db.object(`conversation/${conversationID}`).set(conversation).then(data=>{
             let currentTime = Math.round(new Date().getTime() / 1000);
-            let userConversation = new UserConversation(conversation.conversationID, "", currentTime, 0);
-            this.db.object(`users/${user.userID}/conversation`).update(userConversation);
+            let userConversation = new UserConversation(conversation.conversationID, welcomeMess, 
+                currentTime, 1, user.userName, user.picProfile);
+            if(isNewUser){
+                user.conversation = {[conversationID.toString()]: userConversation}
+                this.db.object(`users/${user.userID}`).set(user);
+            }else{
+                this.db.database.ref(`users/${user.userID}/conversation`)
+                .child(conversation.conversationID.toString()).set(userConversation);
+            }
+            
         })
     }
 
@@ -70,38 +80,38 @@ export class ChatFireBaseService {
         .child("isSeen").set(true);
     }
 
-    getListConversation(){
-        return this.db.list('conversation').valueChanges();
+    getListConversation(user: User){
+        return this.db.list(`users/${user.userID}/conversation`).valueChanges();
     }
 
     getListMessageConversation(conversationID: String){
         return this.db.list(`conversation/${conversationID}/message`).valueChanges();
     }
 
-    createuserDemo(){
-        let u_c = new UserConversation('8eig2pdkr82doakhnlofl6', 'Welcome thi lưu, willing to help you', 1537084640, 2);
-        let user = new User(
-            'HNErJhopeqbOTBfRE8fDocLK1FC5',
-            'admin',
-            'Admin',
-            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
-            '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
-            'mail@mail.com',
-            [
-                u_c
-            ],
-            'admin'
-        );
-        this.db.object(`users/${user.userID}`).set(user);
-    }
+    // createuserDemo(){
+    //     let u_c = new UserConversation('8eig2pdkr82doakhnlofl6', 'Welcome thi lưu, willing to help you', 1537084640, 2);
+    //     let user = new User(
+    //         'HNErJhopeqbOTBfRE8fDocLK1FC5',
+    //         'admin',
+    //         'Admin',
+    //         '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
+    //         '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
+    //         'mail@mail.com',
+    //         [
+    //             u_c
+    //         ],
+    //         'admin'
+    //     );
+    //     this.db.object(`users/${user.userID}`).set(user);
+    // }
     
-    createConversationDemo(){
-        let mes1 = new Message('123', 'Test Message', null, null, '-LMWM5-98dtBiNUAq3bA', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-        let mes2 = new Message('124', 'Test Message 1', null, null, '-LMWM5-EbfFQw_8ngpk1', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-        let mes3 = new Message('124', 'Test Message 2', null, null, '-LMWM5-98dtBiNUAq3bA', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-        let mes4 = new Message('124', 'Test Message 3', null, null, '-LMWM5-EbfFQw_8ngpk1', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
+    // createConversationDemo(){
+    //     let mes1 = new Message('123', 'Test Message', null, null, '-LMWM5-98dtBiNUAq3bA', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
+    //     let mes2 = new Message('124', 'Test Message 1', null, null, '-LMWM5-EbfFQw_8ngpk1', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
+    //     let mes3 = new Message('124', 'Test Message 2', null, null, '-LMWM5-98dtBiNUAq3bA', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
+    //     let mes4 = new Message('124', 'Test Message 3', null, null, '-LMWM5-EbfFQw_8ngpk1', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
 
-        let conversation = new Conversation('1', [mes1, mes2, mes3, mes4])
-        this.db.database.ref("conversation").push(conversation);
-    }
+    //     let conversation = new Conversation('1', [mes1, mes2, mes3, mes4])
+    //     this.db.database.ref("conversation").push(conversation);
+    // }
 }

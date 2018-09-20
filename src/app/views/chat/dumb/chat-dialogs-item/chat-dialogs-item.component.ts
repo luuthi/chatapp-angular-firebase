@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ChatDialogsItemComponent implements OnInit {
 
-  @Input() user: any;
+  @Input() conversation: any;
   
   constructor() { }
 

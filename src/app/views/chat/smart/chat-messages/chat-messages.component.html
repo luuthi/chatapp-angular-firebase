@@ -5,8 +5,8 @@
       <div class="header--ava">
         <div class="ava--box">L</div>
       </div>
-      <!-- <div class="header--name">{{userChat.fullName}}</div> -->
-      <div class="header--name">Name</div>
+      <div class="header--name" *ngIf="curUser.type !== 'customer'">{{userChat.userchat}}</div>
+      <div class="header--name"*ngIf="curUser.type === 'customer'">Admin</div>
     </div>
   </div>
   <div class="action-hover-inner">
@@ -22,7 +22,7 @@
   <form [formGroup]="formMessage" (ngSubmit)="sendMessage(formMessage)">
     <div class="row">
         <div class="col-auto">
-          <input class="compose-mes-inpt" matInput placeholder="Soạn tin nhắn..." formControlName="message" >
+          <input class="compose-mes-inpt" autocomplete="false" [value]="messageChat" matInput placeholder="Soạn tin nhắn..." formControlName="message" >
         </div>
         <div class="col-auto">
           <button class="btn-send-mes" type="submit">

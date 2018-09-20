@@ -3,7 +3,7 @@
     {{ message.messageContent }}
   </div>
   <div class="col-auto mes-time align-self-center" [class.order-2]="!isCurrentUser" [class.order-1]="isCurrentUser" >
-    <div>Jun 9, 2018</div>
-    <div>9:21 AM</div>
+    <div>{{ message.date }}</div>
+    <div>{{ message.time }}</div>
   </div>
 </div>
