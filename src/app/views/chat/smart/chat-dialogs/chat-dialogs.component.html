@@ -1,7 +1,7 @@
-<div class="dialogs-inner" [@flyOutFade]="!isViewMes">
+<div class="dialogs-inner" [@flyOutFade]="!isViewMes && !isViewUserList">
     <div *ngIf="isLogin">
         <div class="dialogs--toolbar-header">
-            <button class="btn-compose">
+            <button class="btn-compose" (click)="viewUserList()">
                 <i class="fa fa-envelope" aria-hidden="true"></i> Soạn
             </button>
             <input class="search-mes" matInput placeholder="Tìm kiếm tin nhắn...">
@@ -16,4 +16,7 @@
     </div>
 </div>
 <app-chat-messages *ngIf="afAuth.user && isViewMes"
- [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()" [curUser]="curUser" [userChat]="userActive"></app-chat-messages>
+ [flyInFade]="isViewMes" (actionBack)="viewMessagesOrDialogs()" [curUser]="curUser"
+  [userChat]="userActive"></app-chat-messages>
+<app-user-chats *ngIf="afAuth.user && isViewUserList" [flyInFade]="isViewUserList" 
+(actionBack)="viewUserList()" [curUser]="curUser" (onClickUser)="startConversation($event)"></app-user-chats>

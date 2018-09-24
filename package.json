@@ -37,6 +37,7 @@
     "core-js": "^2.5.4",
     "firebase": "^5.5.0",
     "flatpickr": "^4.5.2",
+    "ngx-scroll-event": "^1.0.8",
     "rxjs": "^6.3.2",
     "zone.js": "^0.8.26"
   },

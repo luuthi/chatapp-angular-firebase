@@ -9,6 +9,6 @@
     <div class="dialog--short-dialog">{{conversation.lastMessage}}</div>
   </div>
   <div class="col-2 dialog-time align-self-start">
-    {{conversation.lastTime}}
+    {{conversation.lastTime | date :'HH:MM:ss'}}
   </div>
 </div>

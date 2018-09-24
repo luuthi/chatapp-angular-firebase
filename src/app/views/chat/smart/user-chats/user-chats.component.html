@@ -1,0 +1,21 @@
+<div class="user-inner" [@flyInFade]="flyInFade">
+  <div class="user--toolbar-header">
+    <i class="fa fa-angle-left" aria-hidden="true" (click)="actionBack.emit()"></i>
+    <div class="user--header">
+      <div class="header--name">Tin nhắn mới</div>
+    </div>
+  </div>
+  <div class="user--input-search">
+    <span class="user--button-chat">Tới:</span>
+    <form [formGroup]="frmSearchUser" (ngSubmit)="searchUser(frmSearchUser)">
+        <input class="user-search" type="search" autocomplete="off" 
+         matInput placeholder="Nhập tên tài khoản" formControlName="userSearch" 
+         (input)="onChange(frmSearchUser)">
+    </form>
+    <span class="user--button-clear" *ngIf="isShowClear" (click)="clearSearch(frmSearchUser)"><span class="fa fa-close"></span></span>
+  </div>
+  <div class="list-user" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+    <div class="no-data" *ngIf="noData">Không có dữ liệu</div>
+    <app-user-chat *ngFor="let user of listUser" [user]="user" (click)="clickUser(user, frmSearchUser)"></app-user-chat>
+  </div>
+</div>

@@ -4,8 +4,9 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { User } from '../../../../core/model/user';
 import { Message } from '../../../../core/model/message';
 import { ChatFireBaseService } from '../../services/chat-firebase.service';
-import { UserRole } from '../../../../core/constant/enum';
 import { FormGroup, FormControl } from '@angular/forms';
+import { UserConversation } from '../../../../core/model/user_conversation';
+import { ScrollEvent } from 'ngx-scroll-event';
 
 @Component({
   selector: 'app-chat-messages',
@@ -38,9 +39,11 @@ export class ChatMessagesComponent implements OnInit {
   listMessage: Array<any> = [];
   @Input() curUser : User;
   @Input() userChat : any;
-  isCanBack : boolean = false;
   conversationID: String;
   messageChat = "";
+  lastMessage : String;
+  loading: boolean = false;
+  lastTime : Number;
 
   formMessage: FormGroup;
 
@@ -48,10 +51,7 @@ export class ChatMessagesComponent implements OnInit {
 
   ngOnInit() {
     if(this.curUser !== null){
-      if(this.curUser.type === UserRole.admin || this.curUser.type === UserRole.supporter){
-        this.isCanBack = true;
-      }
-      this.getMessageConversation();
+      this.getMessageConversation(10);
       this.formMessage = new FormGroup({
         message: new FormControl(''),
       });
@@ -63,26 +63,34 @@ export class ChatMessagesComponent implements OnInit {
     return this.curUser.userID === sendID;
   }
 
-  getMessageConversation(){
+  updateLastMessage(){
+    let ucCurUser = new UserConversation(this.conversationID, this.lastMessage, this.lastTime, 
+      1, this.userChat.userChat, this.userChat.userPic, this.userChat.userID, this.userChat.type);
+    let ucChatUser = new UserConversation(this.conversationID, this.lastMessage, this.lastTime, 
+      1, this.curUser.fullName, this.curUser.picProfile, this.curUser.userID, this.curUser.type);
+      this.chatFirebaseService.updateUserConversation(ucCurUser, this.curUser.userID, this.conversationID, this.curUser.type);
+      this.chatFirebaseService.updateUserConversation(ucChatUser, this.userChat.userID, this.conversationID, this.userChat.type);
+  }
+
+  getMessageConversation(numMess : number){
+    let self = this;
     if(this.curUser.conversation != null){
       this.conversationID = this.userChat["conversationID"];
-      this.chatFirebaseService.getListMessageConversation(this.conversationID.toString())
-      .forEach(element => {
-        element.forEach(item => {
-          console.log(!this.checkMessageExist(item));
+      this.chatFirebaseService.getListMessageConversation(this.conversationID.toString(), numMess)
+      .on('value', function(snapshot){
+        let data = snapshot.val();
+        for (let key in data){
+          let item = data[key];
           if (item !== undefined && item !== null){
-            if (!this.checkMessageExist(item)) {
-              let date = new Date(item['messageTime'] * 1000).toLocaleDateString();
-              let time = new Date(item['messageTime'] * 1000).toLocaleTimeString();
-              item['date'] = date;
-              item['time'] = time;
-              this.listMessage.push(item);
-              this.listMessage.sort((a,b) => (a['messageTime'] > b['messageTime']) ? 1 : ((b['messageTime'] > a['messageTime']) ? -1 : 0))
+            if (!self.checkMessageExist(item)) {
+              item['mesageTime_format'] = new Date(item['messageTime'] * 1000);
+              self.listMessage.push(item);
+              self.listMessage.sort((a,b) => (a['messageTime'] > b['messageTime']) ? 1 : ((b['messageTime'] > a['messageTime']) ? -1 : 0))
             }
-            
           }
-        });
-      });
+        }
+        this.loading =  false;
+      })
     }
     
   }
@@ -91,7 +99,6 @@ export class ChatMessagesComponent implements OnInit {
     var i;
     for (i = 0; i < this.listMessage.length; i++) {
         if (this.listMessage[i].messageID === item.messageID) {
-            console.log(this.listMessage[i]);
             return true;
         }
     }
@@ -100,10 +107,26 @@ export class ChatMessagesComponent implements OnInit {
   }
 
   sendMessage(form: FormGroup){
-    let time = new Date();
-    let mes = new Message(this.genID(), form.value.message, null, null, this.curUser.userID, null, Math.round(time.getTime() / 1000), false);
-    this.chatFirebaseService.addMessage(mes, this.conversationID.toString());
-    this.messageChat = "";
+    if (form.value.message !== ""){
+      let time = new Date();
+      this.lastMessage = form.value.message;
+      this.lastTime = Math.round(time.getTime() / 1000);
+      let mes = new Message(this.genID(), this.lastMessage, null, null, 
+      this.curUser.userID, null, this.lastTime, false);
+      this.chatFirebaseService.addMessage(mes, this.conversationID.toString());
+      this.updateLastMessage();
+      this.messageChat = "";
+      form.controls.message.setValue("");
+    }
+    
+  }
+  public handleScroll(event: ScrollEvent) {
+    if (event.isReachingTop) {
+      if(!this.loading){
+        this.loading =  true;
+        this.getMessageConversation(this.listMessage.length + 10)
+      }
+    }
   }
 
   genID() {

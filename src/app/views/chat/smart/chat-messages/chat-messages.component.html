@@ -1,19 +1,19 @@
 <div class="messages-inner" [@flyInFade]="flyInFade">
   <div class="mes--toolbar-header">
-    <i class="fa fa-angle-left" aria-hidden="true" (click)="actionBack.emit()" *ngIf="isCanBack"></i>
+    <i class="fa fa-angle-left" aria-hidden="true" (click)="actionBack.emit()"></i>
     <div class="mes--header">
       <div class="header--ava">
-        <div class="ava--box">L</div>
+        <div class="ava--box"><img [src]="userChat.userPic"></div>
       </div>
       <div class="header--name" *ngIf="curUser.type !== 'customer'">{{userChat.userchat}}</div>
-      <div class="header--name"*ngIf="curUser.type === 'customer'">Admin</div>
     </div>
   </div>
   <div class="action-hover-inner">
     Chăm sóc khách hàng:
     <i class="fa fa-phone" aria-hidden="true"></i> +1 (647) 886 7886
   </div>
-  <div class="list-mess" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+  <div class="list-mess" #scrollMe [scrollTop]="scrollMe.scrollHeight" 
+  detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="0" [topOffset]="10">
     <app-chat-messages-item *ngFor="let item of listMessage" [isCurrentUser]="checkIsCurrentUser(item.senderID)" [message]="item"></app-chat-messages-item>
   </div>
 </div>
@@ -22,7 +22,7 @@
   <form [formGroup]="formMessage" (ngSubmit)="sendMessage(formMessage)">
     <div class="row">
         <div class="col-auto">
-          <input class="compose-mes-inpt" autocomplete="false" [value]="messageChat" matInput placeholder="Soạn tin nhắn..." formControlName="message" >
+          <input class="compose-mes-inpt" autocomplete="off"  matInput placeholder="Soạn tin nhắn..." formControlName="message" >
         </div>
         <div class="col-auto">
           <button class="btn-send-mes" type="submit">

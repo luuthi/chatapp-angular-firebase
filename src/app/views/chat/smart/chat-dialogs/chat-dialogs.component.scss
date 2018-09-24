@@ -5,6 +5,7 @@
     // max-height: 360px;
 }
 .dialogs-inner{
+    width: 100%;
     .action-hover-inner{
         background-color: #e7503c;
         color: #ffffff;
@@ -34,7 +35,7 @@
 .list-dialogs{
     max-height: calc(100vh - 283px);
     height: calc(100vh - 283px);
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: unset;
     position: relative;
 }

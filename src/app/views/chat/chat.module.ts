@@ -17,6 +17,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UserChatComponent } from './dumb/user-chat/user-chat.component';
+import { UserChatsComponent } from './smart/user-chats/user-chats.component';
+import { ScrollEventModule } from 'ngx-scroll-event';
 
 @NgModule( {
   imports:[
@@ -32,9 +35,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     ChatRoutingModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
+    ScrollEventModule,
     AngularFireModule.initializeApp(environment.firebase, 'demo-chat')
     ], 
-  declarations:[ChatComponent, ChatDialogsComponent, ChatDialogsItemComponent, ChatMessagesComponent, ChatMessagesItemComponent], 
+  declarations:[ChatComponent, ChatDialogsComponent, ChatDialogsItemComponent, ChatMessagesComponent, ChatMessagesItemComponent, UserChatComponent, UserChatsComponent], 
   exports:[ChatComponent],
   providers: [ChatFireBaseService, AngularFireAuth],
 })

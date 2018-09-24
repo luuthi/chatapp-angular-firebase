@@ -32,41 +32,42 @@ export class ChatFireBaseService {
         this._listners.next();
     }
 
-    getUser(){
-        return this.db.list('users').snapshotChanges().pipe(
-            map(actions => {
-                return actions.map( c => ({ key: c.payload.key, ...c.payload.val() }));
-            })
-        )
+    getAdminAcc(){
+        return this.db.database.ref('users/admin').orderByChild('fullName')
     }
 
-    getAdminAcc(){
-        return this.db.database.ref('users').orderByChild('type')
-        .startAt(UserRole.admin).endAt(UserRole.admin)
+    searchUser(type: String, strSearch: String){
+        if (type === UserRole.admin){
+            return this.db.database.ref(`users/customer`).orderByChild('fullName')
+            .startAt(strSearch.toString()).endAt(strSearch.toString()+"\uf8ff")
+        } else if(type === UserRole.customer){
+            return this.db.database.ref(`users/admin`).orderByChild('fullName')
+            .startAt(strSearch.toString()).endAt(strSearch.toString()+"\uf8ff")
+        }
     }
 
     checkUserExist(_id: String){
-        return this.db.database.ref(`users/${_id}`);   
+        return this.db.database.ref(`users/customer/${_id}`);   
+    }
+
+    checkUserAdminExist(_id: String){
+        return this.db.database.ref(`users/admin/${_id}`);   
     }
 
     addUser(user: User){
-        return this.db.object(`users/${user.userID}`).set(user);
+        return this.db.object(`users/customer/${user.userID}`).set(user);
     }
 
-    addConversation(conversation: Conversation, user: User, welcomeMess: String, isNewUser: boolean){
+    addConversation(conversation: Conversation, curUser: User, userChat: User){
         let conversationID = conversation.conversationID;
         this.db.object(`conversation/${conversationID}`).set(conversation).then(data=>{
-            let currentTime = Math.round(new Date().getTime() / 1000);
-            let userConversation = new UserConversation(conversation.conversationID, welcomeMess, 
-                currentTime, 1, user.userName, user.picProfile);
-            if(isNewUser){
-                user.conversation = {[conversationID.toString()]: userConversation}
-                this.db.object(`users/${user.userID}`).set(user);
-            }else{
-                this.db.database.ref(`users/${user.userID}/conversation`)
-                .child(conversation.conversationID.toString()).set(userConversation);
-            }
-            
+            let ucCurUser = new UserConversation(conversation.conversationID, "", 0, 
+              1, userChat.fullName, userChat.picProfile, userChat.userID, userChat.type);
+            let ucChatUser = new UserConversation(conversation.conversationID, "", 0, 
+              1, curUser.fullName, curUser.picProfile, curUser.userID, curUser.type);
+
+            this.updateUserConversation(ucCurUser, curUser.userID, conversation.conversationID, curUser.type);
+            this.updateUserConversation(ucChatUser, userChat.userID, conversation.conversationID, userChat.type);
         })
     }
 
@@ -80,38 +81,27 @@ export class ChatFireBaseService {
         .child("isSeen").set(true);
     }
 
+    updateUserConversation(uc: UserConversation, userID: String, conversationID: String, type: String){
+        if(type === UserRole.admin){
+            this.db.database.ref(`users/admin/${userID.toString()}/conversation/${conversationID.toString()}`)
+            .update(uc);
+        } else if(type === UserRole.customer){
+            this.db.database.ref(`users/customer/${userID.toString()}/conversation/${conversationID.toString()}`)
+            .update(uc);
+        }
+        
+    }
+
     getListConversation(user: User){
-        return this.db.list(`users/${user.userID}/conversation`).valueChanges();
+        if(user.type === UserRole.admin){
+            return this.db.list(`users/admin/${user.userID}/conversation`).valueChanges();
+        } else if(user.type === UserRole.customer){
+            return this.db.list(`users/customer/${user.userID}/conversation`).valueChanges();
+        }
     }
 
-    getListMessageConversation(conversationID: String){
-        return this.db.list(`conversation/${conversationID}/message`).valueChanges();
+    getListMessageConversation(conversationID: String, numMess){
+        return this.db.database.ref(`conversation/${conversationID}/message`
+        ).orderByChild("messageTime").limitToLast(numMess);
     }
-
-    // createuserDemo(){
-    //     let u_c = new UserConversation('8eig2pdkr82doakhnlofl6', 'Welcome thi lưu, willing to help you', 1537084640, 2);
-    //     let user = new User(
-    //         'HNErJhopeqbOTBfRE8fDocLK1FC5',
-    //         'admin',
-    //         'Admin',
-    //         '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
-    //         '"https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg"',
-    //         'mail@mail.com',
-    //         [
-    //             u_c
-    //         ],
-    //         'admin'
-    //     );
-    //     this.db.object(`users/${user.userID}`).set(user);
-    // }
-    
-    // createConversationDemo(){
-    //     let mes1 = new Message('123', 'Test Message', null, null, '-LMWM5-98dtBiNUAq3bA', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-    //     let mes2 = new Message('124', 'Test Message 1', null, null, '-LMWM5-EbfFQw_8ngpk1', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-    //     let mes3 = new Message('124', 'Test Message 2', null, null, '-LMWM5-98dtBiNUAq3bA', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-    //     let mes4 = new Message('124', 'Test Message 3', null, null, '-LMWM5-EbfFQw_8ngpk1', 'https://lh4.googleusercontent.com/-cKsFy_QHbcU/AAAAAAAAAAI/AAAAAAAACxQ/2DPnv41msTE/photo.jpg', 1537084640, true);
-
-    //     let conversation = new Conversation('1', [mes1, mes2, mes3, mes4])
-    //     this.db.database.ref("conversation").push(conversation);
-    // }
 }
