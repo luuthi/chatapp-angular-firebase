@@ -43,7 +43,8 @@ export class ChatMessagesComponent implements OnInit {
   messageChat = "";
   lastMessage : String;
   loading: boolean = false;
-  lastTime : Number;
+  lastTime : number;
+  curPosSroll : number;
 
   formMessage: FormGroup;
 
@@ -89,7 +90,9 @@ export class ChatMessagesComponent implements OnInit {
             }
           }
         }
-        this.loading =  false;
+        self.loading =  false;
+        let elem = document.getElementsByClassName('list-mess');
+        self.curPosSroll = elem[0].scrollTop;
       })
     }
     
@@ -124,7 +127,11 @@ export class ChatMessagesComponent implements OnInit {
     if (event.isReachingTop) {
       if(!this.loading){
         this.loading =  true;
-        this.getMessageConversation(this.listMessage.length + 10)
+        setTimeout(()=>{
+          this.getMessageConversation(this.listMessage.length + 10);
+          let elem = document.getElementsByClassName('list-mess');
+          elem[0].scrollTo(0, this.curPosSroll);
+        }, 1000);
       }
     }
   }

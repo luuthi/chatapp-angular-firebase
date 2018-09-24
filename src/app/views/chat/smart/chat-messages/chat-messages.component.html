@@ -13,7 +13,7 @@
     <i class="fa fa-phone" aria-hidden="true"></i> +1 (647) 886 7886
   </div>
   <div class="list-mess" #scrollMe [scrollTop]="scrollMe.scrollHeight" 
-  detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="0" [topOffset]="10">
+  detect-scroll (onScroll)="handleScroll($event)" [bottomOffset]="0" [topOffset]="5">
     <app-chat-messages-item *ngFor="let item of listMessage" [isCurrentUser]="checkIsCurrentUser(item.senderID)" [message]="item"></app-chat-messages-item>
   </div>
 </div>
