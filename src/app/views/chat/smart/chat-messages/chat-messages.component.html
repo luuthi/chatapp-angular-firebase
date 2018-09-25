@@ -21,14 +21,10 @@
 <div class="compose-mes-inner">
   <form [formGroup]="formMessage" (ngSubmit)="sendMessage(formMessage)">
     <div class="row">
-        <div class="col-auto">
-          <input class="compose-mes-inpt" autocomplete="off"  matInput placeholder="Soạn tin nhắn..." formControlName="message" >
-        </div>
-        <div class="col-auto">
-          <button class="btn-send-mes" type="submit">
-            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-          </button>
-        </div>
+        <input class="compose-mes-inpt" autocomplete="off"  matInput placeholder="Soạn tin nhắn..." formControlName="message" >
+        <button class="btn-send-mes" type="submit">
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
     </div>
 </form>
 </div>

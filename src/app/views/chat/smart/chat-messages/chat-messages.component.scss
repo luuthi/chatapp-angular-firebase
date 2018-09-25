@@ -29,8 +29,8 @@
     }
 }
 .list-mess{
-    max-height: calc(100vh - 333px);
-    height: calc(100vh - 333px);
+    max-height: calc(100vh - 345px);
+    height: calc(100vh - 345px);
     overflow-y: scroll;
     overflow-x: unset;
     margin-bottom: 10px;
@@ -93,7 +93,7 @@
             background-color: #000000;
             img {
                 height: 30px;
-                width: 30px;
+                min-width: 30px;
                 border-radius: 50%;
             }
         }
@@ -115,30 +115,34 @@
 .compose-mes-inner{
     height: 40px;
     width: 100%;
-    padding: 0 5px;
     .row{
         margin-left: 0;
         margin-right: 0;
+        position: relative;
     }
     .col-auto{
         padding: 0;
     }
     .compose-mes-inpt{
-        width: 264px;
-        height: 40px;
-        padding: 0 1px;
-        border: 1px solid #a9a9a9;
-        margin-right: 5px;
+        width: 100%;
+        height: 57px;
+        padding: 10px;
+        border-top: 1px solid #ccc;
     }
     .btn-send-mes{
         width: 40px;
         height: 40px;
-        background-color: #ea5b44;
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        background-color: #fff;
         border-radius: 5px;
-        color: #ffffff;
+        color: #ea5b44;
         font-size: 18px;
         cursor: pointer;
         &:hover{
+            background-color: #ea5b44;
+            color: #fff;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.349019607843137);
         }
     }

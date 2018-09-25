@@ -7,6 +7,7 @@ import { ChatFireBaseService } from '../../services/chat-firebase.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { UserConversation } from '../../../../core/model/user_conversation';
 import { ScrollEvent } from 'ngx-scroll-event';
+import * as cloneDeep from 'lodash/cloneDeep';
 
 @Component({
   selector: 'app-chat-messages',
@@ -52,7 +53,7 @@ export class ChatMessagesComponent implements OnInit {
 
   ngOnInit() {
     if(this.curUser !== null){
-      this.getMessageConversation(10);
+      this.getMessageConversation(15);
       this.formMessage = new FormGroup({
         message: new FormControl(''),
       });
@@ -84,7 +85,7 @@ export class ChatMessagesComponent implements OnInit {
           let item = data[key];
           if (item !== undefined && item !== null){
             if (!self.checkMessageExist(item)) {
-              item['mesageTime_format'] = new Date(item['messageTime'] * 1000);
+              item['mesageTime_format'] = self.renderTime(item['messageTime']);
               self.listMessage.push(item);
               self.listMessage.sort((a,b) => (a['messageTime'] > b['messageTime']) ? 1 : ((b['messageTime'] > a['messageTime']) ? -1 : 0))
             }
@@ -95,7 +96,25 @@ export class ChatMessagesComponent implements OnInit {
         self.curPosSroll = elem[0].scrollTop;
       })
     }
-    
+  }
+
+  renderTime(time){
+    let current = new Date();
+    let today = new Date(current.setHours(0,0,0,0));
+    var day = current.getDay(),
+    diff = current.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    let monday =  new Date(cloneDeep(today).setDate(diff));
+    if ((time - today.getTime() / 1000) > 0){
+      return new Date(time * 1000).toLocaleTimeString()
+    } else if((time - (today.getTime() / 1000 - 24 * 60 * 60)) > 0){
+      return "Yesterday";
+    } else if(time - monday.getTime() > 0){
+      var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var dayOfWeek = days[new Date(time * 1000).getDay()];
+      return dayOfWeek;
+    } else {
+      return new Date(time * 1000).toLocaleDateString()
+    }
   }
 
   checkMessageExist(item: any) {
@@ -127,11 +146,7 @@ export class ChatMessagesComponent implements OnInit {
     if (event.isReachingTop) {
       if(!this.loading){
         this.loading =  true;
-        setTimeout(()=>{
-          this.getMessageConversation(this.listMessage.length + 10);
-          let elem = document.getElementsByClassName('list-mess');
-          elem[0].scrollTo(0, this.curPosSroll);
-        }, 1000);
+        this.getMessageConversation(this.listMessage.length + 15);
       }
     }
   }

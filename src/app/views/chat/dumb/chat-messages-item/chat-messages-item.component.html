@@ -3,7 +3,6 @@
     {{ message.messageContent }}
   </div>
   <div class="col-auto mes-time align-self-center" [class.order-2]="!isCurrentUser" [class.order-1]="isCurrentUser" >
-    <div>{{ message.mesageTime_format | date: 'dd/MM/yyyy' }}</div>
-    <div>{{ message.mesageTime_format  | date: 'HH:mm:ss' }}</div>
+    <div>{{ message.mesageTime_format }}</div>
   </div>
 </div>

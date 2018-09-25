@@ -8,7 +8,7 @@
     <div class="dialog--name">{{ conversation.userChat }}</div>
     <div class="dialog--short-dialog">{{conversation.lastMessage}}</div>
   </div>
-  <div class="col-2 dialog-time align-self-start">
-    {{conversation.lastTime | date :'HH:MM:ss'}}
+  <div class="col-3 dialog-time align-self-start">
+    {{conversation.lastTime_display}}
   </div>
 </div>
