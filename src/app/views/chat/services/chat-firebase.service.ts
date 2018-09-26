@@ -9,6 +9,7 @@ import { Conversation } from "../../../core/model/conversation";
 import { UserConversation } from "../../../core/model/user_conversation";
 import {UserRole} from '../../../core/constant/enum';
 import { Subject } from 'rxjs';
+import { Http,  Headers } from '@angular/http';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,8 @@ export class ChatFireBaseService {
     
     constructor(
         public db: AngularFireDatabase,
-        public dbft: AngularFirestore
+        public dbft: AngularFirestore,
+        private _http: Http,
     ) {
     }
     private _listners = new Subject<any>();
@@ -103,5 +105,24 @@ export class ChatFireBaseService {
     getListMessageConversation(conversationID: String, numMess){
         return this.db.database.ref(`conversation/${conversationID}/message`
         ).orderByChild("messageTime").limitToLast(numMess);
+    }
+
+    getKeyMessaging(userID: string){
+      return this.db.database.ref(`fcmTokens/${userID}`);
+    }
+
+    sendNotify(userName, key){
+        let headers = new Headers();
+        let path = "https://fcm.googleapis.com/fcm/send";
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", "key=AAAAa-IMgLI:APA91bHLcXq6yh342TjjQt89rwutQZ1LUHTWqAwfyID-v8ZuzVl1XiSV93KHmzXd9D0VOfkix5clzH1A31o6ZL_EUoDsRqQ7-GwxQCjcAAd8Wu-E_FQy_gTcanGrOKWxDBbm2_B-rz35");
+        let myParams = { 
+            "notification": {
+             "title": "Hello World", 
+             "body": "This is Message from " + userName
+            },
+            "to" : key
+           }
+        return this._http.post(path, myParams);
     }
 }

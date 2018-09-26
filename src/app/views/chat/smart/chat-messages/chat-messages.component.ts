@@ -1,5 +1,5 @@
-import { EventEmitter, Input } from '@angular/core';
-import { Component, OnInit, Output } from '@angular/core';
+import { EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Output, AfterViewChecked } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { User } from '../../../../core/model/user';
 import { Message } from '../../../../core/model/message';
@@ -36,6 +36,7 @@ import * as cloneDeep from 'lodash/cloneDeep';
 export class ChatMessagesComponent implements OnInit {
   @Input() flyInFade: boolean = false;
   @Output() actionBack: EventEmitter<any> = new EventEmitter();
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   listMessage: Array<any> = [];
   @Input() curUser : User;
@@ -48,6 +49,7 @@ export class ChatMessagesComponent implements OnInit {
   curPosSroll : number;
 
   formMessage: FormGroup;
+  disableScrollDown = false;
 
   constructor(private chatFirebaseService: ChatFireBaseService) { }
 
@@ -58,6 +60,19 @@ export class ChatMessagesComponent implements OnInit {
         message: new FormControl(''),
       });
     }
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom(): void {
+    if (this.disableScrollDown) {
+        return
+    }
+    try {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 
   checkIsCurrentUser(sendID: any):boolean{
@@ -81,6 +96,10 @@ export class ChatMessagesComponent implements OnInit {
       this.chatFirebaseService.getListMessageConversation(this.conversationID.toString(), numMess)
       .on('value', function(snapshot){
         let data = snapshot.val();
+        let lastConv :boolean = false;
+        if (Object.keys(data).length !== self.listMessage.length){
+          lastConv = true;
+        }
         for (let key in data){
           let item = data[key];
           if (item !== undefined && item !== null){
@@ -92,8 +111,17 @@ export class ChatMessagesComponent implements OnInit {
           }
         }
         self.loading =  false;
-        let elem = document.getElementsByClassName('list-mess');
-        self.curPosSroll = elem[0].scrollTop;
+        let element = self.myScrollContainer.nativeElement
+        if(element.scrollHeight - element.scrollTop === element.clientHeight){
+          self.disableScrollDown = false;
+          self.scrollToBottom();
+        } else {
+          if (lastConv){
+            setTimeout(()=>{
+              self.myScrollContainer.nativeElement.scrollTop = 20;
+            }, 300)
+          }
+        }
       })
     }
   }
@@ -130,6 +158,7 @@ export class ChatMessagesComponent implements OnInit {
 
   sendMessage(form: FormGroup){
     if (form.value.message !== ""){
+      let self = this;
       let time = new Date();
       this.lastMessage = form.value.message;
       this.lastTime = Math.round(time.getTime() / 1000);
@@ -137,18 +166,32 @@ export class ChatMessagesComponent implements OnInit {
       this.curUser.userID, null, this.lastTime, false);
       this.chatFirebaseService.addMessage(mes, this.conversationID.toString());
       this.updateLastMessage();
-      this.messageChat = "";
+      let key = "";
+      this.chatFirebaseService.getKeyMessaging(this.userChat.userID).on('value', function(snapshot){
+        key = snapshot.val();
+        self.chatFirebaseService.sendNotify(self.curUser.fullName, key);
+      });
       form.controls.message.setValue("");
+      this.disableScrollDown = false;
+      this.scrollToBottom();
     }
     
   }
   public handleScroll(event: ScrollEvent) {
-    if (event.isReachingTop) {
-      if(!this.loading){
-        this.loading =  true;
-        this.getMessageConversation(this.listMessage.length + 15);
-      }
+    let element = this.myScrollContainer.nativeElement
+    let atBottom = element.scrollHeight - element.scrollTop === element.clientHeight
+    if (this.disableScrollDown && atBottom) {
+        this.disableScrollDown = false
+    } else {
+        this.disableScrollDown = true
     }
+      if (event.isReachingTop) {
+        if(!this.loading){
+          this.loading =  true;
+          this.getMessageConversation(this.listMessage.length + 10);    
+        }
+      }
+    
   }
 
   genID() {

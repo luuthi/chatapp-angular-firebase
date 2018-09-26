@@ -7,8 +7,7 @@ import {auth }from 'firebase';
 import {User }from '../../../../core/model/user'; 
 import {UserRole }from '../../../../core/constant/enum'; 
 import {Conversation }from '../../../../core/model/conversation'; 
-import {Message }from '../../../../core/model/message'; 
-import {async }from 'rxjs/internal/scheduler/async'; 
+import { MessagingService } from '../../services/messaging.service';
 
 @Component( {
   selector:'app-chat-dialogs', 
@@ -33,10 +32,12 @@ export class ChatDialogsComponent implements OnInit {
   curUser: User; 
   isViewUserList: boolean = false;
   userActive: any;
+  message;
 
   constructor(
     public chatFireBaseService:ChatFireBaseService, 
-    public afAuth:AngularFireAuth) {
+    public afAuth:AngularFireAuth,
+    public messagingService: MessagingService) {
       this.chatFireBaseService.listen().subscribe((m:any) => {
         this.logout();
     })
@@ -54,6 +55,9 @@ export class ChatDialogsComponent implements OnInit {
       this.updateUserLocal(this.curUser);
       this.getConversationByUser(this.curUser);
       this.isLogin = true;
+      this.messagingService.requestPermission(this.curUser.userID)
+      this.messagingService.receiveMessage()
+      this.message = this.messagingService.currentMessage
     }else{
       this.curUser = null;
       this.isLogin = false;
